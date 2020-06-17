@@ -1,5 +1,5 @@
 name: ivy
-description: A new Flutter project.
+description: A Dashboard Sidekick
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `pub publish`. This is preferred for private packages.
@@ -25,6 +25,9 @@ dependencies:
     sdk: flutter
   barcode_scan: ^3.0.1
   dynamic_widget: any
+  http:
+  provider:
+  reorderables:
   webview_flutter: any
 
 
