@@ -24,13 +24,14 @@ dependencies:
   flutter:
     sdk: flutter
   barcode_scan: ^3.0.1
-  dynamic_widget: any
+  crypto: ^2.1.4
+  dynamic_widget: ^2.0.2
+  flutter_secure_storage: ^3.3.3
+  http: ^0.12.1
   provider:
   reorderables:
-  webview_flutter: any
-  flutter_secure_storage: ^3.3.3
-  dio: ^3.0.9
-  crypto: ^2.1.4
+  sembast: ^2.4.5
+  url_launcher: ^5.4.11
 
 
 
