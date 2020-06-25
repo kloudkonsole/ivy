@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 
+import 'package:provider/provider.dart';
+
+import 'package:ivy/vm/store_bloc.dart';
+
 class StoreScreen extends StatelessWidget {
   final String id;
 
@@ -8,6 +12,8 @@ class StoreScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext ctx) {
+    final bloc = Provider.of<StoreBloc>(ctx);
+
     return Scaffold(
       appBar: AppBar(
         title: Text(id),
@@ -23,6 +29,11 @@ class StoreScreen extends StatelessWidget {
             child: Text('Home'),
             onPressed: (){
               Navigator.of(ctx).pop();
+            }),
+          RaisedButton(
+            child: Text('load'),
+            onPressed: () async {
+              await bloc.load();
             }),
           RaisedButton(
             child: Text('Safe Entry'),

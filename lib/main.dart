@@ -4,7 +4,7 @@ import 'package:ivy/v/app_screen.dart';
 import 'package:ivy/v/store_screen.dart';
 import 'package:ivy/v/cfg_screen.dart';
 import 'package:ivy/v/err_screen.dart';
-import 'package:ivy/vm/appstore_bloc.dart';
+import 'package:ivy/vm/store_bloc.dart';
 import 'package:ivy/vm/tile_bloc.dart';
 import 'package:provider/provider.dart';
 
@@ -46,7 +46,7 @@ class Ivy extends StatelessWidget{
   Widget build(BuildContext ctx){
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider<AppStoreBloc>(create: (_) => AppStoreBloc()),
+        ChangeNotifierProvider<StoreBloc>(create: (_) => StoreBloc()),
         ChangeNotifierProvider<TileBloc>(create: (_) => TileBloc())
       ],
       child: MaterialApp(

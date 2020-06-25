@@ -1,32 +1,34 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:ivy/m/app.dart';
 
 import 'package:ivy/s/github.dart';
-import 'package:ivy/s/storage.dart';
+import 'package:ivy/s/app_store.dart';
+import 'package:ivy/s/bindwood.dart';
 
 class StoreBloc with ChangeNotifier{
+  GitHub _repo = new GitHub();
+  BindWood _source = new BindWood();
+  AppStore _storedb = new AppStore();
+
   List<App> _apps = [];
-  GitHub repo = new GitHub();
-  BindWood source = new BindWood();
-  Storage storedb = new Storage('store');
+  String _ver = '';
 
-  List<App> get apps {
-    return _apps;
-  }
+  List<App> get applications => _apps;
+  String get version => _ver;
 
-  StoreBloc(){
-    init();
-  }
-
-  Future init() async{
-    String current = await repo.getVersion();
-    String last = await storedb.getString('store_version');
+  Future load() async{
+    String current = await _repo.getVersion();
+    String last = await _storedb.getStr('ver');
     if (current == last){
-      _apps = await storedb.getList('store');
+      _apps = await _storedb.getList('store');
     }else{
-      _apps = source.getStore();
-      await storedb.add('store_version', current);
-      await storedb.add('store', _apps);
+      _apps = await _source.getStore();
+      await _storedb.setStr('ver', current);
+      await _storedb.setList('store', _apps);
     }
+
+    notifyListeners();
   }
 }
