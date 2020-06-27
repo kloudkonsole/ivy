@@ -1,8 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:ivy/m/app.dart';
 
+import 'package:ivy/w/tile.dart';
+import 'package:ivy/m/app.dart';
 import 'package:ivy/s/github.dart';
 import 'package:ivy/s/app_store.dart';
 import 'package:ivy/s/bindwood.dart';
@@ -36,7 +37,7 @@ class StoreBloc with ChangeNotifier{
       await _storedb.setList('store', _apps);
     }
 
-    _widgets = _apps.map((e) => Icon(Icons.apps, size: StoreBloc.size)).toList();
+    _widgets = _apps.map((a) => Tile(url: _source.assetURL(a.id, a.icon), name: a.name)).toList();
 
     notifyListeners();
   }
