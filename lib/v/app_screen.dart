@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 class AppScreen extends StatelessWidget {
   final String id;
 
-  AppScreen({Key key, @required this.id}) : super(key: key){
-  }
+  AppScreen({Key key, @required this.id}) : super(key: key);
 
   @override
   Widget build(BuildContext ctx) {

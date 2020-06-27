@@ -8,6 +8,9 @@ import 'package:ivy/s/app_store.dart';
 import 'package:ivy/s/bindwood.dart';
 
 class StoreBloc with ChangeNotifier{
+  static double size = 90;
+  List<Widget> _widgets = <Widget>[];
+
   GitHub _repo = new GitHub();
   BindWood _source = new BindWood();
   AppStore _storedb = new AppStore();
@@ -15,8 +18,12 @@ class StoreBloc with ChangeNotifier{
   List<App> _apps = [];
   String _ver = '';
 
-  List<App> get applications => _apps;
   String get version => _ver;
+  List<Widget> get apllications => _widgets;
+
+  StoreBloc(){
+    load();
+  }
 
   Future load() async{
     String current = await _repo.getVersion();
@@ -29,6 +36,24 @@ class StoreBloc with ChangeNotifier{
       await _storedb.setList('store', _apps);
     }
 
+    _widgets = _apps.map((e) => Icon(Icons.apps, size: StoreBloc.size)).toList();
+
+    notifyListeners();
+  }
+
+  void removeAt(int index){
+    _widgets.removeAt(index);
+    notifyListeners();
+  }
+
+  void add(Widget widget){
+    _widgets.add(widget);
+    notifyListeners();
+  }
+
+  void swap(int oldIndex, int newIndex){
+    Widget widget = _widgets.removeAt(oldIndex);
+    _widgets.insert(newIndex, widget);
     notifyListeners();
   }
 }

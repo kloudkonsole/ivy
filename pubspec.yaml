@@ -26,6 +26,7 @@ dependencies:
   barcode_scan: ^3.0.1
   crypto: ^2.1.4
   dynamic_widget: ^2.0.2
+  flutter_offline: "^0.3.0"
   flutter_secure_storage: ^3.3.3
   http: ^0.12.1
   path_provider: ^1.6.11

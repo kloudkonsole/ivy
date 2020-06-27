@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 class CfgScreen extends StatelessWidget {
   final String id;
 
-  CfgScreen({Key key, @required this.id}) : super(key: key){
-  }
+  CfgScreen({Key key, @required this.id}) : super(key: key);
 
   @override
   Widget build(BuildContext ctx) {
