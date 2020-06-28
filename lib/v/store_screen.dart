@@ -26,10 +26,13 @@ class StoreScreen extends StatelessWidget {
               spacing: 8.0,
               runSpacing: 4.0,
               padding: const EdgeInsets.all(8),
-              children: bloc.apllications, 
+              children: bloc.getApps((String id){
+                Navigator.of(ctx).pushNamed('/store/:id', arguments: id);
+              }), 
+              needsLongPressDraggable: false,
               onReorder: (int oldIndex, int newIndex){
                 bloc.swap(oldIndex, newIndex);
-              }
+              },
             )
 
           ],

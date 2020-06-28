@@ -21,7 +21,7 @@ class BindWood {
     return apps;
   }
 
-  String assetURL(String id, String asset){
+  static String assetURL(String id, String asset){
     return 'https://$HOST$PATH/$id/$asset';
   }
 }

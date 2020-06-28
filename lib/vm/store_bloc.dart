@@ -20,7 +20,6 @@ class StoreBloc with ChangeNotifier{
   String _ver = '';
 
   String get version => _ver;
-  List<Widget> get apllications => _widgets;
 
   StoreBloc(){
     load();
@@ -37,9 +36,16 @@ class StoreBloc with ChangeNotifier{
       await _storedb.setList('store', _apps);
     }
 
-    _widgets = _apps.map((a) => Tile(url: _source.assetURL(a.id, a.icon), name: a.name)).toList();
-
     notifyListeners();
+  }
+
+  List<Widget> getApps(Function(String) onTap) {
+    if (_widgets.length == 0){
+      _widgets = _apps.map((a) => Tile(id: a.id, url: BindWood.assetURL(a.id, a.icon), name: a.name, tap: onTap)).toList();
+    }else{
+      _widgets = _widgets.map((a) => Tile.clone(a, onTap)).toList();
+    }
+    return _widgets;
   }
 
   void removeAt(int index){
