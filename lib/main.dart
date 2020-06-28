@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+
+import 'package:provider/provider.dart';
+
 import 'package:ivy/v/home_screen.dart';
 import 'package:ivy/v/app_screen.dart';
 import 'package:ivy/v/store_screen.dart';
-import 'package:ivy/v/cfg_screen.dart';
+import 'package:ivy/v/env_screen.dart';
 import 'package:ivy/v/err_screen.dart';
 import 'package:ivy/vm/store_bloc.dart';
+import 'package:ivy/vm/env_bloc.dart';
 import 'package:ivy/vm/tile_bloc.dart';
-import 'package:provider/provider.dart';
 
 main() => runApp(Ivy());
 
@@ -23,10 +26,10 @@ class RouteGenerator{
       case '/apps':
         return MaterialPageRoute(builder: (_) => HomeScreen(title: 'Ivy'));
       case '/store':
-        return MaterialPageRoute(builder: (_) => StoreScreen(id: 'Ivy'));
+        return MaterialPageRoute(builder: (_) => StoreScreen(title: 'Store'));
         break;
       case '/store/:id':
-        return MaterialPageRoute(builder: (_) => CfgScreen(id: 'Ivy'));
+        return MaterialPageRoute(builder: (_) => EnvScreen(app: args));
         break;
       case '/apps/:id':
         if (args is String){
@@ -47,6 +50,7 @@ class Ivy extends StatelessWidget{
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<StoreBloc>(create: (_) => StoreBloc()),
+        ChangeNotifierProvider<EnvBloc>(create: (_) => EnvBloc()),
         ChangeNotifierProvider<TileBloc>(create: (_) => TileBloc())
       ],
       child: MaterialApp(

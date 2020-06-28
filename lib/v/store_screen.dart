@@ -6,9 +6,9 @@ import 'package:ivy/vm/store_bloc.dart';
 import 'package:reorderables/reorderables.dart';
 
 class StoreScreen extends StatelessWidget {
-  final String id;
+  final String title;
 
-  StoreScreen({Key key, @required this.id}) : super(key: key);
+  StoreScreen({Key key, @required this.title}) : super(key: key);
 
   @override
   Widget build(BuildContext ctx) {
@@ -16,7 +16,7 @@ class StoreScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(id),
+        title: Text(title),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -26,8 +26,9 @@ class StoreScreen extends StatelessWidget {
               spacing: 8.0,
               runSpacing: 4.0,
               padding: const EdgeInsets.all(8),
-              children: bloc.getApps((String id){
-                Navigator.of(ctx).pushNamed('/store/:id', arguments: id);
+              children: bloc.getWidgets((String id){
+                final app = bloc.getApp(id);
+                Navigator.of(ctx).pushNamed('/store/:id', arguments: app);
               }), 
               needsLongPressDraggable: false,
               onReorder: (int oldIndex, int newIndex){

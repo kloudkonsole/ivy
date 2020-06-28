@@ -39,13 +39,17 @@ class StoreBloc with ChangeNotifier{
     notifyListeners();
   }
 
-  List<Widget> getApps(Function(String) onTap) {
+  List<Widget> getWidgets(Function(String) onTap) {
     if (_widgets.length == 0){
       _widgets = _apps.map((a) => Tile(id: a.id, url: BindWood.assetURL(a.id, a.icon), name: a.name, tap: onTap)).toList();
     }else{
       _widgets = _widgets.map((a) => Tile.clone(a, onTap)).toList();
     }
     return _widgets;
+  }
+
+  App getApp(String id){
+    return _apps.firstWhere((element) => element.id == id);
   }
 
   void removeAt(int index){

@@ -21,6 +21,16 @@ class BindWood {
     return apps;
   }
 
+  Future<String> fetch(String id, String asset) async {
+    final path = '$PATH/$id/$asset.json'; 
+    final uri = Uri.https(HOST, path);
+    final res = await http.get(uri, headers: _headers);
+
+    if (res.statusCode >= 400) throw Exception('GET $path Status[${res.statusCode}]');
+
+    return res.body;
+  }
+
   static String assetURL(String id, String asset){
     return 'https://$HOST$PATH/$id/$asset';
   }
