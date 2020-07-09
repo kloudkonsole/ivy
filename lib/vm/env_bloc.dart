@@ -1,27 +1,26 @@
 import 'dart:async';
+import 'dart:convert' show json;
 
 import 'package:flutter/material.dart';
 
 import 'package:ivy/s/bindwood.dart';
 
-class EnvBloc with ChangeNotifier{
+class EnvBloc with ChangeNotifier {
   BindWood _source = new BindWood();
-  Map<String, String> env = {};
+  Map<String, Map<String, dynamic>> env = {};
 
-  Future fetchEnv(String id) async{
+  Future fetchEnv(String id) async {
+    String text = await _source.fetch(id, 'env');
+    env[id] = json.decode(text);
 
-    String json = await _source.fetch(id, 'env');
-    env[id] = json;
-
-    notifyListeners();
+    return env[id];
   }
 
-  String getJson(String key) {
-    if (env.containsKey(key)){
+  Future<Map<String, dynamic>> getForm(String key) async {
+    if (env.containsKey(key)) {
       return env[key];
-    }else {
-      fetchEnv(key);
-      return '';
+    } else {
+      return await fetchEnv(key);
     }
   }
 }
