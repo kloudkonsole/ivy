@@ -8,7 +8,7 @@ class App{
   String name;
   String desc;
   String author;
-  bool private;
+  int private;
 
   App({
     this.id, 
@@ -22,18 +22,44 @@ class App{
   });
 
   factory App.fromJson(json){
-    Color bgcolor = Color(int.parse(json['color'].replaceAll('#', '0xff')));
-    Color color = bgcolor.computeLuminance() > 0.5 ? Colors.black : Colors.white;
+    Color color = Color(int.parse(json['color'].replaceAll('#', '0xff')));
+    Color bgcolor = Color(int.parse(json['bgcolor'].replaceAll('#', '0xff')));
     return App(
       id: json['id'],
       bgcolor: bgcolor,
       color: color,
-      icon: json['urls']['icon'],
-      name: json['urls']['name'],
-      desc: json['alt_description'] ,
-      author: json['user']['author'],
-      private: json['user']['private'],
+      icon: json['icon'],
+      name: json['name'],
+      desc: json['desc'] ,
+      author: json['author'],
+      private: json['private'],
     );
+  }
+
+  Map<String, dynamic> toJson() => {
+    'id': id,
+    'bgcolor': '#${bgcolor.value.toRadixString(16)}',
+    'color': '#${color.value.toRadixString(16)}',
+    'icon': icon,
+    'name': name,
+    'desc': desc,
+    'author': author,
+    'private': private
+  };
+
+  @override
+  String toString() {
+    return """
+    id: $id
+    bgcolor: #${bgcolor.value.toRadixString(16)}
+    color: #${color.value.toRadixString(16)}
+    icon: $icon
+    name: $name
+    desc: $desc
+    author: $author
+    private: $private
+    ----------------------------------
+    """;
   }
 
   @override

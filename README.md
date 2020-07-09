@@ -1,8 +1,10 @@
 # ivy
 
-Cloud Console Best Sidekick
+The cloud console best sidekick
 
 ## Ingredients
 - barcode\_scan
 - dynamico\_widget
-= webview
+- webview
+- reorderable
+- provider
