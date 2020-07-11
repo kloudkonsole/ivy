@@ -5,6 +5,7 @@ import './components/JSONDateTimeField.dart';
 import './components/JSONForignKeyField.dart';
 import './components/JSONSelectField.dart';
 import './components/JSONTextFormField.dart';
+import './components/JSONSignatureField.dart';
 import './models/Action.dart';
 import './models/Controller.dart';
 import './models/Icon.dart';
@@ -209,6 +210,19 @@ class _JSONSchemaFormState extends State<JSONForm> {
             setState(() {
               schema.value = value.value;
               schema.choice = value;
+            });
+          },
+        );
+
+      case (WidgetType.signature):
+        return JSONSignatureField(
+          key: Key(schema.name),
+          schema: schema,
+          isOutlined: widget.rounded,
+          filled: widget.filled,
+          onSaved: (String value) {
+            setState(() {
+              schema.value = value;
             });
           },
         );

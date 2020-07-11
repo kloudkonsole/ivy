@@ -8,7 +8,8 @@ enum WidgetType {
   foreignkey,
   unknown,
   select,
-  checkbox
+  checkbox,
+  signature
 }
 
 class Schema {
