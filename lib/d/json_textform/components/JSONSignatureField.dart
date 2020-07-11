@@ -75,13 +75,8 @@ class _JSONSignatureFieldState extends State<JSONSignatureField> {
     return Container(
         child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 4),
-            child: ListView(children: <Widget>[
-              Container(
-                height: 300,
-                child: Center(
-                  child: Text('Big container to test scrolling issues'),
-                ),
-              ),
+            // see: https://stackoverflow.com/a/57335217
+            child: ListView(shrinkWrap: true, children: <Widget>[
               //SIGNATURE CANVAS
               Signature(
                 controller: _controller,
