@@ -13,26 +13,26 @@ import 'package:ivy/vm/tile_bloc.dart';
 
 main() => runApp(Ivy());
 
-class RouteGenerator{
-
-  static Route<dynamic> _errorRoute(code){
+class RouteGenerator {
+  static Route<dynamic> _errorRoute(code) {
     return MaterialPageRoute(builder: (_) => ErrScreen(code: code));
   }
-  static Route<dynamic> generateRoute(RouteSettings settings){
+
+  static Route<dynamic> generateRoute(RouteSettings settings) {
     final args = settings.arguments;
 
-    switch(settings.name){
+    switch (settings.name) {
       case '/':
       case '/apps':
         return MaterialPageRoute(builder: (_) => HomeScreen(title: 'Ivy'));
       case '/store':
-        return MaterialPageRoute(builder: (_) => StoreScreen(title: 'Store'));
+        return MaterialPageRoute(builder: (_) => StoreScreen(title: 'All'));
         break;
       case '/store/:id':
         return MaterialPageRoute(builder: (_) => EnvScreen(app: args));
         break;
       case '/apps/:id':
-        if (args is String){
+        if (args is String) {
           return MaterialPageRoute(builder: (_) => AppScreen(id: args));
         }
         return _errorRoute('Wrong Type: ' + args);
@@ -42,11 +42,11 @@ class RouteGenerator{
   }
 }
 
-class Ivy extends StatelessWidget{
+class Ivy extends StatelessWidget {
   final String title = 'Ivy';
 
   @override
-  Widget build(BuildContext ctx){
+  Widget build(BuildContext ctx) {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<StoreBloc>(create: (_) => StoreBloc()),
@@ -54,12 +54,11 @@ class Ivy extends StatelessWidget{
         ChangeNotifierProvider<TileBloc>(create: (_) => TileBloc())
       ],
       child: MaterialApp(
-        title: title,
-        theme: ThemeData(primarySwatch: Colors.brown),
-        initialRoute: '/',
-        onGenerateRoute: RouteGenerator.generateRoute,
-        debugShowCheckedModeBanner: false
-      ),
+          title: title,
+          theme: ThemeData(primarySwatch: Colors.brown),
+          initialRoute: '/',
+          onGenerateRoute: RouteGenerator.generateRoute,
+          debugShowCheckedModeBanner: false),
     );
   }
 }

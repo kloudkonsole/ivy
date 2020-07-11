@@ -2,14 +2,14 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 
-import 'package:json_schema_form/json_textform/JSONForm.dart';
-import 'package:json_schema_form/json_textform/JSONSchemaForm.dart';
-import 'package:json_schema_form/json_textform/models/Action.dart';
-import 'package:json_schema_form/json_textform/models/Controller.dart';
-import 'package:json_schema_form/json_textform/models/Icon.dart';
-import 'package:json_schema_form/json_textform/models/Schema.dart';
 import 'package:provider/provider.dart';
 
+import 'package:ivy/d/json_textform/JSONForm.dart';
+import 'package:ivy/d/json_textform/JSONSchemaForm.dart';
+import 'package:ivy/d/json_textform/models/Action.dart';
+import 'package:ivy/d/json_textform/models/Controller.dart';
+import 'package:ivy/d/json_textform/models/Icon.dart';
+import 'package:ivy/d/json_textform/models/Schema.dart';
 import 'package:ivy/m/app.dart';
 import 'package:ivy/vm/env_bloc.dart';
 
@@ -59,8 +59,8 @@ class EnvScreen extends StatelessWidget {
           final map = snapshot.data;
           return SizedBox.expand(
               child: JSONSchemaForm(
+            schemaName: 'darren',
             controller: jctrl,
-            useDropdownButton: true,
             onAddForignKeyField: (path, values) async {
               print("added");
             },
@@ -84,6 +84,8 @@ class EnvScreen extends StatelessWidget {
             },
             filled: false,
             rounded: false,
+            showSubmitButton: false,
+            useDropdownButton: false,
             schema: (map['fields'] as List)
                 .map((s) => s as Map<String, dynamic>)
                 .toList(),
@@ -97,26 +99,21 @@ class EnvScreen extends StatelessWidget {
               FieldIcon(schemaName: "unit", iconData: Icons.g_translate)
             ],
             actions: [
+              FieldAction(
+                schemaName: "qr_code",
+                actionTypes: ActionTypes.qrScan,
+                actionDone: ActionDone.getInput,
+              ),
               FieldAction<File>(
-                  schemaName: "qr_code",
-                  actionTypes: ActionTypes.image,
-                  actionDone: ActionDone.getImage,
-                  onDone: (File file) async {
-                    if (file is File) {
-                      print(file);
-                    }
-                    return file;
-                  }),
-              FieldAction<File>(
-                  schemaName: "name",
-                  schemaFor: "category_id",
+                  schemaName: "description",
+                  schemaFor: "darren",
                   actionTypes: ActionTypes.image,
                   actionDone: ActionDone.getInput,
                   onDone: (File file) async {
                     if (file is File) {
                       print(file);
                     }
-                    return "abc";
+                    return file.path;
                   })
             ],
             url: "http://192.168.1.120",
