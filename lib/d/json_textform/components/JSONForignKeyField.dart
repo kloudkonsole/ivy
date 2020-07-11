@@ -22,11 +22,11 @@ class JSONForignKeyField extends StatelessWidget {
 
   /// List of actions. Each field will only have one action.
   /// If not, the last one will replace the first one.
-  final List<FieldAction> actions;
+  final Map<String, FieldAction> actions;
 
   /// List of icons. Each field will only have one icon.
   /// If not, the last one will replace the first one.
-  final List<FieldIcon> icons;
+  final Map<String, FieldIcon> icons;
 
   JSONForignKeyField({
     @required this.schema,

@@ -22,8 +22,6 @@ class FieldAction<T> implements Field<FieldAction> {
   ActionTypes actionTypes;
   ActionDone actionDone;
   final OnDone<T> onDone;
-  @override
-  String schemaName;
 
   @override
   String schemaFor;
@@ -34,25 +32,22 @@ class FieldAction<T> implements Field<FieldAction> {
   FieldAction(
       {this.actionDone,
       this.actionTypes,
-      this.schemaName,
       this.onDone,
       this.useGlobally = true,
       this.schemaFor});
 
   @override
   List<Schema> merge(
-      List<Schema> schemas, List<FieldAction> fields, String name) {
+      List<Schema> schemas, Map<String, FieldAction> fields, String name) {
     return schemas.map((s) {
-      fields.forEach((f) {
-        if (f.schemaName == s.name) {
-          if ((f.schemaFor == null && f.useGlobally) || f.schemaFor == name) {
-            s.action = f;
-          } else if ((!f.useGlobally && f.schemaFor == null) &&
-              f.schemaFor == null) {
-            s.action = f;
-          }
-        }
-      });
+      if (!fields.containsKey(s.actionName)) return s;
+      var f = fields[s.actionName];
+      if ((f.schemaFor == null && f.useGlobally) || f.schemaFor == name) {
+        s.action = f;
+      } else if ((!f.useGlobally && f.schemaFor == null) &&
+          f.schemaFor == null) {
+        s.action = f;
+      }
       return s;
     }).toList();
   }

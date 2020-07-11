@@ -22,6 +22,9 @@ class Schema {
   /// Map's key
   String name;
 
+  String iconName;
+  String actionName;
+
   /// If widget type is not defined in the enum, then
   /// return widgetType.unknown
   WidgetType widget;
@@ -50,6 +53,8 @@ class Schema {
       this.readOnly,
       this.extra,
       this.name,
+      this.iconName,
+      this.actionName,
       this.widget,
       this.isRequired,
       this.validation,
@@ -105,6 +110,8 @@ class Schema {
         json['extra'],
       ),
       name: json['name'],
+      iconName: json['iconName'],
+      actionName: json['actionName'],
       widget: _widgetType,
       isRequired: json['required'],
       validation: Validation.fromJSON(json['validations']),

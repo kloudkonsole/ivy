@@ -89,23 +89,21 @@ class EnvScreen extends StatelessWidget {
             schema: (map['fields'] as List)
                 .map((s) => s as Map<String, dynamic>)
                 .toList(),
-            icons: [
-              FieldIcon(schemaName: "name", iconData: Icons.title),
-              FieldIcon(schemaName: "description", iconData: Icons.description),
-              FieldIcon(schemaName: "price", iconData: Icons.attach_money),
-              FieldIcon(schemaName: "column", iconData: Icons.view_column),
-              FieldIcon(schemaName: "row", iconData: Icons.view_list),
-              FieldIcon(schemaName: "qr_code", iconData: Icons.scanner),
-              FieldIcon(schemaName: "unit", iconData: Icons.g_translate)
-            ],
-            actions: [
-              FieldAction(
-                schemaName: "qr_code",
+            icons: {
+              'name': FieldIcon(iconData: Icons.title),
+              'desc': FieldIcon(iconData: Icons.description),
+              'price': FieldIcon(iconData: Icons.attach_money),
+              'column': FieldIcon(iconData: Icons.view_column),
+              'row': FieldIcon(iconData: Icons.view_list),
+              'qr_code': FieldIcon(iconData: Icons.scanner),
+              'unit': FieldIcon(iconData: Icons.g_translate)
+            },
+            actions: {
+              'qr_code': FieldAction(
                 actionTypes: ActionTypes.qrScan,
                 actionDone: ActionDone.getInput,
               ),
-              FieldAction<File>(
-                  schemaName: "description",
+              'image': FieldAction<File>(
                   schemaFor: "darren",
                   actionTypes: ActionTypes.image,
                   actionDone: ActionDone.getInput,
@@ -115,7 +113,7 @@ class EnvScreen extends StatelessWidget {
                     }
                     return file.path;
                   })
-            ],
+            },
             url: "http://192.168.1.120",
             values: {
               "author_id": {"label": "sdfsdfa", "value": 2},
