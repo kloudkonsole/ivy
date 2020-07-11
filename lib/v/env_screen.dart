@@ -61,27 +61,6 @@ class EnvScreen extends StatelessWidget {
               child: JSONSchemaForm(
             schemaName: 'darren',
             controller: jctrl,
-            onAddForignKeyField: (path, values) async {
-              print("added");
-            },
-            onUpdateForignKeyField: (path, values, id) async {
-              print("updated");
-            },
-            onFetchingForignKeyChoices: (path) async {
-              print("$path");
-              return [
-                Choice(label: "Hello", value: "1"),
-              ];
-            },
-            onFetchingSchema: (path, isEdit, id) async {
-              print("$path $id");
-              return SchemaValues(
-                schema: (map['fields'] as List)
-                    .map((s) => s as Map<String, dynamic>)
-                    .toList(),
-                values: {},
-              );
-            },
             filled: false,
             rounded: false,
             showSubmitButton: false,
@@ -114,11 +93,33 @@ class EnvScreen extends StatelessWidget {
                     return file.path;
                   })
             },
-            url: "http://192.168.1.120",
             values: {
               "author_id": {"label": "sdfsdfa", "value": 2},
               "name": "abcdefhaha",
-              "time": DateTime(2016, 1, 4, 1).toIso8601String(),
+              "time": DateTime(2020, 07, 13, 1).toIso8601String(),
+            },
+            // for foreign keys
+            url: "http://192.168.1.120",
+            onAddForignKeyField: (path, values) async {
+              print("added");
+            },
+            onUpdateForignKeyField: (path, values, id) async {
+              print("updated");
+            },
+            onFetchingForignKeyChoices: (path) async {
+              print("$path");
+              return [
+                Choice(label: "Hello", value: "1"),
+              ];
+            },
+            onFetchingSchema: (path, isEdit, id) async {
+              print("$path $id");
+              return SchemaValues(
+                schema: (map['fields'] as List)
+                    .map((s) => s as Map<String, dynamic>)
+                    .toList(),
+                values: {},
+              );
             },
           ));
         },
