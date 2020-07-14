@@ -190,11 +190,11 @@ class EnvBloc with ChangeNotifier {
       "validations": {}
     },
     {
-      "label": "sign",
+      "label": "signature",
       "readonly": false,
       "extra": {},
       "name": "sign",
-      "widget": "signature",
+      "widget": "canvas",
       "required": false,
       "translated": false,
       "validations": {}

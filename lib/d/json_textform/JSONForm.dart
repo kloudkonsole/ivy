@@ -5,7 +5,7 @@ import './components/JSONDateTimeField.dart';
 import './components/JSONForignKeyField.dart';
 import './components/JSONSelectField.dart';
 import './components/JSONTextFormField.dart';
-import './components/JSONSignatureField.dart';
+import './components/JSONCanvasField.dart';
 import './models/Action.dart';
 import './models/Controller.dart';
 import './models/Icon.dart';
@@ -214,8 +214,8 @@ class _JSONSchemaFormState extends State<JSONForm> {
           },
         );
 
-      case (WidgetType.signature):
-        return JSONSignatureField(
+      case (WidgetType.canvas):
+        return JSONCanvasField(
           key: Key(schema.name),
           schema: schema,
           isOutlined: widget.rounded,
