@@ -6,6 +6,7 @@ import './components/JSONForignKeyField.dart';
 import './components/JSONSelectField.dart';
 import './components/JSONTextFormField.dart';
 import './components/JSONCanvasField.dart';
+import './components/JSONSearchField.dart';
 import './models/Action.dart';
 import './models/Controller.dart';
 import './models/Icon.dart';
@@ -216,6 +217,19 @@ class _JSONSchemaFormState extends State<JSONForm> {
 
       case (WidgetType.canvas):
         return JSONCanvasField(
+          key: Key(schema.name),
+          schema: schema,
+          isOutlined: widget.rounded,
+          filled: widget.filled,
+          onSaved: (String value) {
+            setState(() {
+              schema.value = value;
+            });
+          },
+        );
+
+      case (WidgetType.search):
+        return JSONSearchField(
           key: Key(schema.name),
           schema: schema,
           isOutlined: widget.rounded,

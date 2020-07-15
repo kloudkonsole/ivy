@@ -9,7 +9,8 @@ enum WidgetType {
   unknown,
   select,
   checkbox,
-  canvas
+  canvas,
+  search
 }
 
 class Schema {

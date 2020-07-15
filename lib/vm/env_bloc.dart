@@ -25,17 +25,17 @@ class EnvBloc with ChangeNotifier {
       "validations": {}
     },
     {
-      "label": "Item Name",
+      "label": "Parcel Reference",
       "readonly": false,
-      "extra": {"help": "Please Enter your item name", "default": ""},
-      "name": "name",
-      "widget": "text",
+      "extra": {"help": "Please Enter the parcel reference", "default": ""},
+      "name": "reference",
+      "widget": "search",
       "iconName": "name",
       "actionName": "qr_code",
       "required": true,
       "translated": false,
       "validations": {
-        "length": {"maximum": 1024}
+        "length": {"maximum": 64}
       }
     },
     {
