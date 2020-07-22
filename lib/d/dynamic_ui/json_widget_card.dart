@@ -14,6 +14,6 @@ class JSONWidgetCard extends StatelessWidget {
     final attr = cast<Map<String, dynamic>>(schema[1]);
     final child = cast<List<dynamic>>(schema[2]);
 
-    return new JSONWidget(schema: child);
+    return JSONWidget(schema: child);
   }
 }

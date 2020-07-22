@@ -33,7 +33,18 @@ class EnvBloc with ChangeNotifier {
 */
     String text = '''
   ["root", {"id": "blu"}, ["form", {"id": "pp"}, [
-      ["text", {"id": "id"}]
+      ["search", {
+        "id": "reference",
+        "lbl": "Parcel Reference",
+        "required": true,
+        "type": "text"
+      }],
+      ["text", {
+        "id": "id",
+        "lbl": "Parcel ID",
+        "required": true,
+        "type": "text"
+      }]
   ]]]
     ''';
     env[id] = json.decode(text);

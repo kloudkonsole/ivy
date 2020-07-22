@@ -1,19 +1,64 @@
 import 'package:flutter/material.dart';
 
-import './json_widget.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 
-class JSONWidgetSearch extends StatelessWidget {
+import './util.dart';
+
+class JSONWidgetSearch extends StatefulWidget {
   final List<dynamic> schema;
 
-  JSONWidgetSearch({@required this.schema});
+  JSONWidgetSearch({Key key, @required this.schema}) : super(key: key);
 
-  T cast<T>(x) => x is T ? x : null;
+  @override
+  _JSONWidgetSearch createState() => _JSONWidgetSearch();
+}
+
+class _JSONWidgetSearch extends State<JSONWidgetSearch> {
+  final TextEditingController _ctrl = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext ctx) {
-    final attr = cast<Map<String, dynamic>>(schema[1]);
-    final child = cast<List<dynamic>>(schema[2]);
+    final attr = Util.cast<Map<String, dynamic>>(widget.schema[1]);
+    final label = Util.cast<String>(attr['lbl'], 'LABEL');
+    final type = Util.cast<String>(attr['type'], 'text');
+    final mandatory = Util.cast<bool>(attr['required'], false);
 
-    return new JSONWidget(schema: child);
+    return TypeAheadFormField(
+      textFieldConfiguration: TextFieldConfiguration(
+        controller: _ctrl,
+        decoration: InputDecoration(labelText: label + (mandatory ? '*' : '')),
+        keyboardType: Util.str2enum<TextInputType>(TextInputType.values, type),
+        textInputAction: TextInputAction.search,
+      ),
+      validator: (String value) {
+        if (mandatory && value.isEmpty) return '$label is required';
+        return null;
+      },
+      onSaved: (String value) {
+        return value;
+      },
+      suggestionsCallback: (pattern) async {
+        //return await BackendService.getSuggestions(pattern);
+        return [
+          {'icon': 'shopping_cart', 'name': 'world', 'price': '3.4'},
+          {'name': 'hello', 'price': '10.0'},
+        ];
+      },
+      itemBuilder: (context, suggestion) {
+        return ListTile(
+          leading: Icon(Util.icon(suggestion['icon'] ?? '')),
+          title: Text(suggestion['name']),
+          subtitle: Text('\$${suggestion['price']}'),
+        );
+      },
+      onSuggestionSelected: (suggestion) {
+        _ctrl.text = suggestion['name'];
+      },
+    );
   }
 }
