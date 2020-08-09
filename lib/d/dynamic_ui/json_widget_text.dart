@@ -21,6 +21,7 @@ class JSONWidgetText extends StatelessWidget {
         if (mandatory && value.isEmpty) return '$label is required';
         return null;
       },
+      controller: ,
       onSaved: (String value) {
         return value;
       },

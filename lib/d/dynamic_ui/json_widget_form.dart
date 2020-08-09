@@ -1,17 +1,24 @@
 import 'package:flutter/material.dart';
 
 import './json_widget.dart';
+import './json_widget_controller.dart';
 import './util.dart';
 
-class JSONWidgetForm extends StatelessWidget {
+class JSONWidgetForm extends StatefulWidget {
   final List<dynamic> schema;
+  final JSONWidgetController controller;
 
-  JSONWidgetForm({@required this.schema});
+  JSONWidgetForm({@required this.schema, this.controller});
 
   @override
+  _JSONWidgetFormState createState() => _JSONWidgetFormState();
+}
+
+class _JSONWidgetFormState extends State<JSONWidgetForm> {
+  @override
   Widget build(BuildContext ctx) {
-    final attr = Util.cast<Map<String, dynamic>>(schema[1]);
-    final child = Util.cast<List<dynamic>>(schema[2]);
+    final attr = Util.cast<Map<String, dynamic>>(widget.schema[1]);
+    final child = Util.cast<List<dynamic>>(widget.schema[2]);
 
     return Form(
         key: Key(Util.cast<String>(attr['id'])),
@@ -24,4 +31,6 @@ class JSONWidgetForm extends StatelessWidget {
                   }))
         ]));
   }
+
+  Future<Map<String, dynamic>> onSubmit(BuildContext ctx) async {}
 }
