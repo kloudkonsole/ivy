@@ -3,16 +3,20 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../d/dynamic_ui/json_widget.dart';
+import '../d/dynamic_ui/json_widget_controller.dart';
 import '../m/app.dart';
 import '../vm/env_bloc.dart';
 import '../w/empty_state.dart';
 
 class EnvScreen extends StatelessWidget {
   final App app;
+  final JSONWidgetController _ctrl = new JSONWidgetController();
 
   EnvScreen({Key key, @required this.app}) : super(key: key);
 
-  void save(BuildContext ctx) async {}
+  void save(BuildContext ctx) async {
+    _ctrl.onSubmit(ctx);
+  }
 
   @override
   Widget build(BuildContext ctx) {

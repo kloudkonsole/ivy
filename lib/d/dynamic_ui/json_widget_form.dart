@@ -15,6 +15,16 @@ class JSONWidgetForm extends StatefulWidget {
 }
 
 class _JSONWidgetFormState extends State<JSONWidgetForm> {
+  final _formKey = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.controller != null) {
+      widget.controller.formKey = _formKey;
+    }
+  }
+
   @override
   Widget build(BuildContext ctx) {
     final attr = Util.cast<Map<String, dynamic>>(widget.schema[1]);
@@ -31,6 +41,4 @@ class _JSONWidgetFormState extends State<JSONWidgetForm> {
                   }))
         ]));
   }
-
-  Future<Map<String, dynamic>> onSubmit(BuildContext ctx) async {}
 }

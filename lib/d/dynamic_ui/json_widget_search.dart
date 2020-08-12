@@ -1,32 +1,26 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_typeahead/flutter_typeahead.dart';
+import 'package:provider/provider.dart';
 
 import './util.dart';
+import './form_bloc.dart';
 
-class JSONWidgetSearch extends StatefulWidget {
+class JSONWidgetSearch extends StatelessWidget {
   final List<dynamic> schema;
+  final TextEditingController _ctrl = TextEditingController();
 
   JSONWidgetSearch({Key key, @required this.schema}) : super(key: key);
 
   @override
-  _JSONWidgetSearch createState() => _JSONWidgetSearch();
-}
-
-class _JSONWidgetSearch extends State<JSONWidgetSearch> {
-  final TextEditingController _ctrl = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext ctx) {
-    final attr = Util.cast<Map<String, dynamic>>(widget.schema[1]);
+    final bloc = Provider.of<FormBloc>(ctx);
+    final attr = Util.cast<Map<String, dynamic>>(schema[1]);
     final label = Util.cast<String>(attr['lbl'], 'LABEL');
     final type = Util.cast<String>(attr['type'], 'text');
     final mandatory = Util.cast<bool>(attr['required'], false);
+
+    _ctrl.text = bloc.readString('text');
 
     return TypeAheadFormField(
       textFieldConfiguration: TextFieldConfiguration(
@@ -40,6 +34,7 @@ class _JSONWidgetSearch extends State<JSONWidgetSearch> {
         return null;
       },
       onSaved: (String value) {
+        bloc.save('text', value);
         return value;
       },
       suggestionsCallback: (pattern) async {
