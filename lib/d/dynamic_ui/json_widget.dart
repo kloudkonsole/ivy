@@ -30,10 +30,7 @@ class JSONWidget extends StatelessWidget {
       case 'dropdown':
         return JSONWidgetDropDown(schema: schema);
       case 'root':
-        return JSONWidgetRoot(
-          schema: schema,
-          controller: controller,
-        );
+        return JSONWidgetRoot(schema: schema, controller: controller);
     }
     return JSONWidgetText(schema: [
       'text',

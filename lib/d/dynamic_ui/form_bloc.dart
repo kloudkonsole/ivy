@@ -13,6 +13,7 @@ class FormBloc with ChangeNotifier {
 
   void save(String key, dynamic value) {
     _value[key] = value;
+    ChangeNotifier();
   }
 
   String readString(String key) {

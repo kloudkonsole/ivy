@@ -11,7 +11,6 @@ class JSONWidgetCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext ctx) {
-    final attr = cast<Map<String, dynamic>>(schema[1]);
     final child = cast<List<dynamic>>(schema[2]);
 
     return JSONWidget(schema: child);

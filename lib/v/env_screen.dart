@@ -54,7 +54,8 @@ class EnvScreen extends StatelessWidget {
           if (!snapshot.hasData) {
             return Center(child: CircularProgressIndicator());
           }
-          return SizedBox.expand(child: JSONWidget(schema: snapshot.data));
+          return SizedBox.expand(
+              child: JSONWidget(schema: snapshot.data, controller: _ctrl));
         },
       ),
     );

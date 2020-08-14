@@ -19,7 +19,7 @@ class JSONWidgetText extends StatelessWidget {
     final type = Util.cast<String>(attr['type'], 'text');
     final mandatory = Util.cast<bool>(attr['required'], false);
 
-    _ctrl.text = bloc.readString('text');
+    _ctrl.text = bloc.readString(attr['id']);
 
     return TextFormField(
       controller: _ctrl,
@@ -31,7 +31,7 @@ class JSONWidgetText extends StatelessWidget {
         return null;
       },
       onSaved: (String value) {
-        bloc.save('text', value);
+        bloc.save(attr['id'], value);
         return value;
       },
     );

@@ -31,7 +31,7 @@ class _JSONWidgetFormState extends State<JSONWidgetForm> {
     final child = Util.cast<List<dynamic>>(widget.schema[2]);
 
     return Form(
-        key: Key(Util.cast<String>(attr['id'])),
+        key: _formKey,
         child: Column(children: <Widget>[
           Expanded(
               child: ListView.builder(
