@@ -27,7 +27,6 @@ class _JSONWidgetFormState extends State<JSONWidgetForm> {
 
   @override
   Widget build(BuildContext ctx) {
-    final attr = Util.cast<Map<String, dynamic>>(widget.schema[1]);
     final child = Util.cast<List<dynamic>>(widget.schema[2]);
 
     return Form(
@@ -37,7 +36,8 @@ class _JSONWidgetFormState extends State<JSONWidgetForm> {
               child: ListView.builder(
                   itemCount: child.length,
                   itemBuilder: (BuildContext ctx, int index) {
-                    return JSONWidget(schema: child[index]);
+                    return JSONWidget(
+                        schema: child[index], controller: widget.controller);
                   }))
         ]));
   }

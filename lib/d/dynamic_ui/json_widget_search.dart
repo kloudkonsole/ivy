@@ -3,24 +3,48 @@ import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:provider/provider.dart';
 
-import './util.dart';
-import './form_bloc.dart';
+import 'package:ivy/d/dynamic_ui/json_widget_controller.dart';
 
-class JSONWidgetSearch extends StatelessWidget {
+import './util.dart';
+
+class JSONWidgetSearch extends StatefulWidget {
   final List<dynamic> schema;
+  final JSONWidgetController controller;
+
+  JSONWidgetSearch({Key key, @required this.schema, @required this.controller})
+      : super(key: key);
+
+  @override
+  _JSONWidgetSearchState createState() => _JSONWidgetSearchState();
+}
+
+class _JSONWidgetSearchState extends State<JSONWidgetSearch> {
   final TextEditingController _ctrl = TextEditingController();
 
-  JSONWidgetSearch({Key key, @required this.schema}) : super(key: key);
+  @override
+  void initState() {
+    super.initState();
+    if (widget.controller != null) {
+      widget.controller.fields.add(_ctrl);
+    }
+  }
+
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is removed from the
+    // widget tree.
+    _ctrl.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext ctx) {
-    final bloc = Provider.of<FormBloc>(ctx);
-    final attr = Util.cast<Map<String, dynamic>>(schema[1]);
+    final attr = Util.cast<Map<String, dynamic>>(widget.schema[1]);
     final label = Util.cast<String>(attr['lbl'], 'LABEL');
     final type = Util.cast<String>(attr['type'], 'text');
     final mandatory = Util.cast<bool>(attr['required'], false);
 
-    _ctrl.text = bloc.readString(attr['id']);
+    _ctrl.text = widget.controller.readString(attr['id']);
 
     return TypeAheadFormField(
       textFieldConfiguration: TextFieldConfiguration(
@@ -34,7 +58,7 @@ class JSONWidgetSearch extends StatelessWidget {
         return null;
       },
       onSaved: (String value) {
-        bloc.save(attr['id'], value);
+        widget.controller.save(attr['id'], value);
         return value;
       },
       suggestionsCallback: (pattern) async {
