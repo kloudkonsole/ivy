@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import './json_widget.dart';
 import './json_widget_controller.dart';
+
+import './network.dart';
 import './util.dart';
 
 class JSONWidgetRoot extends StatelessWidget {
@@ -15,7 +17,8 @@ class JSONWidgetRoot extends StatelessWidget {
     final attr = Util.cast<Map<String, dynamic>>(schema[1]);
     final child = Util.cast<List<dynamic>>(schema[2]);
 
-    controller.attr = attr;
+    Network.instance.setDefault(attr['http']);
+    controller.submitOpt = attr['submit'];
 
     return SafeArea(
         child: GestureDetector(

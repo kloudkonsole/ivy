@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 
+import './network.dart';
+
 class JSONWidgetController {
   GlobalKey<FormState> formKey;
   List<TextEditingController> fields = [];
-  Map<String, dynamic> attr;
+  Map<String, dynamic> submitOpt;
 
   final Map<String, dynamic> _value = {};
 
@@ -23,6 +25,8 @@ class JSONWidgetController {
       FocusScope.of(ctx).requestFocus(FocusNode());
       //submit form
       var ret = new Map<String, dynamic>.from(_value);
+
+      Network.instance.query(submitOpt, ret);
       // clear the content
       _value.clear();
       form.reset();

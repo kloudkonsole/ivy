@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_typeahead/flutter_typeahead.dart';
-import 'package:provider/provider.dart';
 
 import 'package:ivy/d/dynamic_ui/json_widget_controller.dart';
 
+import './network.dart';
 import './util.dart';
 
 class JSONWidgetSearch extends StatefulWidget {
@@ -62,21 +62,20 @@ class _JSONWidgetSearchState extends State<JSONWidgetSearch> {
         return value;
       },
       suggestionsCallback: (pattern) async {
-        //return await BackendService.getSuggestions(pattern);
-        return [
-          {'icon': 'shopping_cart', 'name': 'world', 'price': '3.4'},
-          {'name': 'hello', 'price': '10.0'},
-        ];
+        final Map<String, dynamic> ret =
+            await Network.instance.query(attr['tip'], {'ref': pattern});
+        if (ret['code'] != 0) return [];
+        return Util.cast<List<dynamic>>(ret['body'], []);
       },
       itemBuilder: (context, suggestion) {
         return ListTile(
-          leading: Icon(Util.icon(suggestion['icon'] ?? '')),
-          title: Text(suggestion['name']),
-          subtitle: Text('\$${suggestion['price']}'),
+          leading: Icon(Util.icon(suggestion['id'] ?? '')),
+          title: Text(suggestion['ref']),
+          subtitle: Text('\$${suggestion['sku']}'),
         );
       },
       onSuggestionSelected: (suggestion) {
-        _ctrl.text = suggestion['name'];
+        _ctrl.text = suggestion['ref'];
       },
     );
   }

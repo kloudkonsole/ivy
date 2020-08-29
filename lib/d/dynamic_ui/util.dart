@@ -17,4 +17,13 @@ class Util {
   static IconData icon(name) {
     return getIconUsingPrefix(name: name);
   }
+
+  static replaceJSON(Map<String, String> json, Map<String, dynamic> map) {
+    json.forEach((key, value) {
+      if ('@' == value.substring(0, 1)) {
+        json[key] = map[value.substring(1)];
+      }
+    });
+    return json;
+  }
 }
