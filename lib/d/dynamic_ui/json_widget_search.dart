@@ -65,13 +65,13 @@ class _JSONWidgetSearchState extends State<JSONWidgetSearch> {
         final Map<String, dynamic> ret =
             await Network.instance.query(attr['tip'], {'ref': pattern});
         if (ret['code'] != 0) return [];
-        return Util.cast<List<dynamic>>(ret['body'], []);
+        return List.from(ret['body'] ?? []);
       },
       itemBuilder: (context, suggestion) {
         return ListTile(
-          leading: Icon(Util.icon(suggestion['id'] ?? '')),
+          leading: Icon(Util.icon(1 == suggestion['fav'] ? 'favorite' : '')),
           title: Text(suggestion['ref']),
-          subtitle: Text('\$${suggestion['sku']}'),
+          subtitle: Text('${suggestion['id']} SKU[${suggestion['sku']}]'),
         );
       },
       onSuggestionSelected: (suggestion) {
