@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ivy/d/dynamic_ui/json_stateful_widget.dart';
 
 import './network.dart';
 
@@ -7,10 +8,15 @@ class JSONWidgetController {
   Map<String, dynamic> submitOpt;
 
   final Map<String, TextEditingController> _fields = {};
+  final Map<String, JSONStatefulWidget> _widgets = {};
   final Map<String, dynamic> _value = {};
 
   void addField(String key, TextEditingController ctrl) {
     _fields[key] = ctrl;
+  }
+
+  void addWidget(String key, JSONStatefulWidget widget) {
+    _widgets[key] = widget;
   }
 
   void save(String key, dynamic value) {
