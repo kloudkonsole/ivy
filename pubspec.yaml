@@ -27,12 +27,16 @@ dependencies:
   crypto: ^2.1.4
   flutter_offline: "^0.3.0"
   flutter_secure_storage: ^3.3.3
+  flutter_typeahead: ^1.8.5
   http: ^0.12.1
-  json_schema_form: ^1.0.4+3
+  icons_helper: ^1.0.4
+  image_picker: ^0.6.7+4
   path_provider: ^1.6.11
+  permission_handler: ^5.0.1+1
   provider:
   reorderables:
   sembast: ^2.4.5
+  signature: ^3.2.0
   url_launcher: ^5.4.11
 
 
@@ -58,7 +62,7 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - cfg.json
+    - assets/cfg.json
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 

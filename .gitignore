@@ -1,4 +1,5 @@
-cfg.json
+assets/cfg.json
+ios/Flutter/.last_build_id
 
 # Miscellaneous
 *.class
