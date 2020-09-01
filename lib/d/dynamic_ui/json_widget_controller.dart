@@ -4,10 +4,14 @@ import './network.dart';
 
 class JSONWidgetController {
   GlobalKey<FormState> formKey;
-  List<TextEditingController> fields = [];
   Map<String, dynamic> submitOpt;
 
+  final Map<String, TextEditingController> _fields = {};
   final Map<String, dynamic> _value = {};
+
+  void addField(String key, TextEditingController ctrl) {
+    _fields[key] = ctrl;
+  }
 
   void save(String key, dynamic value) {
     _value[key] = value;
@@ -15,6 +19,13 @@ class JSONWidgetController {
 
   String readString(String key) {
     return _value[key];
+  }
+
+  void reload(Map<String, dynamic> obj) {
+    obj.forEach((key, value) {
+      if (_fields.containsKey(key)) _fields[key].text = value;
+    });
+    _value.addAll(obj);
   }
 
   Future<Map<String, dynamic>> onSubmit(BuildContext ctx) async {
@@ -30,8 +41,8 @@ class JSONWidgetController {
       // clear the content
       _value.clear();
       form.reset();
-      fields.forEach((element) {
-        element.clear();
+      _fields.forEach((key, value) {
+        value.clear();
       });
 
       return ret;

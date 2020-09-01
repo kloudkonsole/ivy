@@ -20,12 +20,24 @@ class JSONWidgetSearch extends StatefulWidget {
 
 class _JSONWidgetSearchState extends State<JSONWidgetSearch> {
   final TextEditingController _ctrl = TextEditingController();
+  Map<String, dynamic> attr = {};
+  String id = '';
+  String label = '';
+  String type = '';
+  bool mandatory = true;
 
   @override
   void initState() {
     super.initState();
+
+    attr = Util.cast<Map<String, dynamic>>(widget.schema[1]);
+    id = Util.cast<String>(attr['id'], 'ID');
+    label = Util.cast<String>(attr['lbl'], 'LABEL');
+    type = Util.cast<String>(attr['type'], 'text');
+    mandatory = Util.cast<bool>(attr['required'], false);
+
     if (widget.controller != null) {
-      widget.controller.fields.add(_ctrl);
+      widget.controller.addField(id, _ctrl);
     }
   }
 
@@ -39,12 +51,7 @@ class _JSONWidgetSearchState extends State<JSONWidgetSearch> {
 
   @override
   Widget build(BuildContext ctx) {
-    final attr = Util.cast<Map<String, dynamic>>(widget.schema[1]);
-    final label = Util.cast<String>(attr['lbl'], 'LABEL');
-    final type = Util.cast<String>(attr['type'], 'text');
-    final mandatory = Util.cast<bool>(attr['required'], false);
-
-    _ctrl.text = widget.controller.readString(attr['id']);
+    _ctrl.text = widget.controller.readString(id);
 
     return TypeAheadFormField(
       textFieldConfiguration: TextFieldConfiguration(
@@ -58,7 +65,7 @@ class _JSONWidgetSearchState extends State<JSONWidgetSearch> {
         return null;
       },
       onSaved: (String value) {
-        widget.controller.save(attr['id'], value);
+        widget.controller.save(id, value);
         return value;
       },
       suggestionsCallback: (pattern) async {
@@ -75,7 +82,7 @@ class _JSONWidgetSearchState extends State<JSONWidgetSearch> {
         );
       },
       onSuggestionSelected: (suggestion) {
-        _ctrl.text = suggestion['ref'];
+        widget.controller.reload(suggestion);
       },
     );
   }
