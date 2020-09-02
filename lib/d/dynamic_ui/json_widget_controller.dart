@@ -7,13 +7,8 @@ class JSONWidgetController {
   GlobalKey<FormState> formKey;
   Map<String, dynamic> submitOpt;
 
-  final Map<String, TextEditingController> _fields = {};
   final Map<String, JSONStatefulWidget> _widgets = {};
   final Map<String, dynamic> _value = {};
-
-  void addField(String key, TextEditingController ctrl) {
-    _fields[key] = ctrl;
-  }
 
   void addWidget(String key, JSONStatefulWidget widget) {
     _widgets[key] = widget;
@@ -29,7 +24,7 @@ class JSONWidgetController {
 
   void reload(Map<String, dynamic> obj) {
     obj.forEach((key, value) {
-      if (_fields.containsKey(key)) _fields[key].text = value;
+      if (_widgets.containsKey(key)) _widgets[key].setValue(value);
     });
     _value.addAll(obj);
   }
@@ -47,8 +42,8 @@ class JSONWidgetController {
       // clear the content
       _value.clear();
       form.reset();
-      _fields.forEach((key, value) {
-        value.clear();
+      _widgets.forEach((key, value) {
+        value.clearValue();
       });
 
       return ret;

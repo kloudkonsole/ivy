@@ -26,9 +26,9 @@ class JSONWidget extends StatelessWidget {
       case 'form':
         return JSONWidgetForm(schema: schema, controller: controller);
       case 'text':
-        return JSONWidgetText(schema: schema, controller: controller);
+        return JSONWidgetText(schema, controller);
       case 'search':
-        return JSONWidgetSearch(schema: schema, controller: controller);
+        return JSONWidgetSearch(schema, controller);
       case 'dropdown':
         subtype = Util.cast<String>(attr['type'], 'text');
         switch (subtype) {
@@ -43,9 +43,9 @@ class JSONWidget extends StatelessWidget {
                 schema: schema, controller: controller);
         }
     }
-    return JSONWidgetText(schema: [
+    return JSONWidgetText([
       'text',
       {'id': 'error', 'value': 'unknown $type'}
-    ], controller: controller);
+    ], controller);
   }
 }

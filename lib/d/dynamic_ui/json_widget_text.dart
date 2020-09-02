@@ -40,6 +40,11 @@ class JSONWidgetText extends StatefulWidget
   void setValue(String value) {
     _ctrl.text = value;
   }
+
+  @override
+  void clearValue() {
+    _ctrl.text = '';
+  }
 }
 
 class _JSONWidgetTextState extends State<JSONWidgetText> {

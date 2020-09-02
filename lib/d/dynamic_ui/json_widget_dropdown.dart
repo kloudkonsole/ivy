@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/semantics.dart';
 
 import 'package:ivy/d/dynamic_ui/json_stateful_widget.dart';
 import 'package:ivy/d/dynamic_ui/json_widget_controller.dart';
@@ -19,6 +20,11 @@ class JSONWidgetDropdown<T> extends StatefulWidget
   @override
   void setValue(T value) {
     _valueNotifier.value = value;
+  }
+
+  @override
+  void clearValue() {
+    _valueNotifier.value = null;
   }
 }
 
