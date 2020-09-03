@@ -94,7 +94,8 @@ class EnvBloc with ChangeNotifier {
       ["dropdown", {
         "id": "s",
         "lbl": "Status",
-        "type": "bool"
+        "type": "int",
+        "items": [[0, "Inactive"], [1, "Active"]]
       }]
   ]]]
     ''';

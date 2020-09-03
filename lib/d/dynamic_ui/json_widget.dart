@@ -33,14 +33,11 @@ class JSONWidget extends StatelessWidget {
         subtype = Util.cast<String>(attr['type'], 'text');
         switch (subtype) {
           case 'text':
-            return JSONWidgetDropdown<String>(
-                schema: schema, controller: controller);
+            return JSONWidgetDropdown<String>(schema, controller);
           case 'int':
-            return JSONWidgetDropdown<int>(
-                schema: schema, controller: controller);
+            return JSONWidgetDropdown<int>(schema, controller);
           case 'bool':
-            return JSONWidgetDropdown<bool>(
-                schema: schema, controller: controller);
+            return JSONWidgetDropdown<bool>(schema, controller);
         }
     }
     return JSONWidgetText([
