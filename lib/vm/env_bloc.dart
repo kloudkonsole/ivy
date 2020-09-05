@@ -96,6 +96,10 @@ class EnvBloc with ChangeNotifier {
         "lbl": "Status",
         "type": "int",
         "items": [[0, "Inactive"], [1, "Active"]]
+      }],
+      ["date", {
+        "id": "cat",
+        "lbl": "Updated At"
       }]
   ]]]
     ''';

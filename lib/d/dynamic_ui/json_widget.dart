@@ -5,6 +5,7 @@ import './json_widget_form.dart';
 import './json_widget_text.dart';
 import './json_widget_search.dart';
 import './json_widget_dropdown.dart';
+import './json_widget_datepicker.dart';
 import './json_widget_controller.dart';
 import './util.dart';
 
@@ -39,6 +40,9 @@ class JSONWidget extends StatelessWidget {
           case 'bool':
             return JSONWidgetDropdown<bool>(schema, controller);
         }
+        break;
+      case 'date':
+        return JSONWidgetDatePicker(schema, controller);
     }
     return JSONWidgetText([
       'text',
