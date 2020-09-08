@@ -82,9 +82,7 @@ class _JSONWidgetDropdownState<T> extends State<JSONWidgetDropdown<T>> {
       decoration: InputDecoration(
           labelText: widget.label + (widget.mandatory ? '*' : '')),
       onChanged: (T value) {
-        setState(() {
-          _selection = value;
-        });
+        widget._valueNotifier.value = value;
       },
       validator: (T value) {
         if (widget.mandatory && value == null)

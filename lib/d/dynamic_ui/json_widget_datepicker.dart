@@ -91,6 +91,10 @@ class _JSONWidgetDatePickerState extends State<JSONWidgetDatePicker> {
         widget.controller.save(widget.id, value);
         return value;
       },
+      selectableDayPredicate: (DateTime value) {
+        widget._valueNotifier.value = value;
+        return true;
+      },
     );
   }
 }

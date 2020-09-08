@@ -1,4 +1,4 @@
-import 'dart:convert' show json;
+import 'dart:convert' show json, jsonEncode;
 import 'package:http/http.dart' as http;
 
 import './util.dart';
@@ -38,7 +38,7 @@ class Network {
       case 'POST':
         final req = Map.from(defaultOption['body'] ?? {});
         req.addAll(option['body'] ?? {});
-        res = await http.post(uri, headers: _headers, body: req);
+        res = await http.post(uri, headers: _headers, body: jsonEncode(req));
         break;
     }
     if (res.statusCode >= 400)
