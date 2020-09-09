@@ -77,7 +77,6 @@ class _JSONWidgetDatePickerState extends State<JSONWidgetDatePicker> {
   @override
   Widget build(BuildContext ctx) {
     return InputDatePickerFormField(
-      key: GlobalKey(),
       fieldLabelText: widget.label + (widget.mandatory ? '*' : ''),
       initialDate: _selection,
       firstDate: DateTime.parse(widget.attr['gt'] ?? '1975-11-15'),

@@ -73,7 +73,6 @@ class _JSONWidgetDropdownState<T> extends State<JSONWidgetDropdown<T>> {
   @override
   Widget build(BuildContext ctx) {
     return DropdownButtonFormField<T>(
-      key: GlobalKey(),
       value: _selection,
       items: widget.attr['items']
           .map<DropdownMenuItem<T>>((item) =>

@@ -1,5 +1,7 @@
 import 'dart:convert' show json, jsonEncode;
+
 import 'package:http/http.dart' as http;
+import 'package:xml_parser/xml_parser.dart';
 
 import './util.dart';
 
@@ -41,9 +43,19 @@ class Network {
         res = await http.post(uri, headers: _headers, body: jsonEncode(req));
         break;
     }
-    if (res.statusCode >= 400)
+    // for security, script.google.com always redirect with 302
+    if (res.statusCode == 302) {
+      // parse return html to get temp url
+      // send again
+      XmlDocument xmlDocument = XmlDocument.fromString(res.body);
+      final redirect = xmlDocument.getElementWhere(
+          name: 'h2', attributes: [XmlAttribute('class', 'title')]);
+      res = await http.get(redirect.text, headers: _headers);
+    } else if (res.statusCode >= 400) {
       throw Exception(
           '${opt['method']} ${opt['path']} Status[${res.statusCode}]');
-    return json.decode(res.body);
+    } else {
+      return json.decode(res.body);
+    }
   }
 }
