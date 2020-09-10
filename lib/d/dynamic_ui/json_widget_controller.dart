@@ -38,7 +38,7 @@ class JSONWidgetController {
       //submit form
       var ret = new Map<String, dynamic>.from(_value);
 
-      Network.instance.query(submitOpt, ret);
+      await Network.instance.query(submitOpt, ret);
       // clear the content
       _value.clear();
       form.reset();

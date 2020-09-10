@@ -12,7 +12,8 @@ class Network {
   Network._();
 
   Map<String, dynamic> defaultOption = {};
-  Map<String, String> get _headers => {'Accept': '*/*'};
+  Map<String, String> get _headers =>
+      {'Accept': 'application/json', 'Content-Type': 'application/json'};
 
   void setDefault(Map<String, dynamic> option) {
     defaultOption = option ?? {};
@@ -21,12 +22,9 @@ class Network {
   Future<Map<String, dynamic>> query(
       Map<String, dynamic> option, Map<String, dynamic> value) async {
     option ??= {};
-    final opt = Map.from(defaultOption);
-    opt.addAll(option);
-
-    final Map<String, String> params = Map.from(defaultOption['params'] ?? {});
-    params.addAll(
-        Map.castFrom<String, dynamic, String, String>(option['params'] ?? {}));
+    final opt = Util.assign<String>(defaultOption, option);
+    final params =
+        Util.assign<String>(defaultOption['params'], option['params']);
 
     Util.replaceJSON(params, value);
     final uri = Uri.https(opt['host'], opt['path'], params);
@@ -38,24 +36,37 @@ class Network {
         res = await http.get(uri, headers: _headers);
         break;
       case 'POST':
-        final req = Map.from(defaultOption['body'] ?? {});
-        req.addAll(option['body'] ?? {});
-        res = await http.post(uri, headers: _headers, body: jsonEncode(req));
+        final body = Util.assign<String>(defaultOption['body'], option['body']);
+        Util.replaceJSON(body, value);
+        res = await http.post(uri, headers: _headers, body: jsonEncode(body));
         break;
     }
+
     // for security, script.google.com always redirect with 302
     if (res.statusCode == 302) {
       // parse return html to get temp url
       // send again
       XmlDocument xmlDocument = XmlDocument.fromString(res.body);
-      final redirect = xmlDocument.getElementWhere(
-          name: 'h2', attributes: [XmlAttribute('class', 'title')]);
-      res = await http.get(redirect.text, headers: _headers);
+      final achor = xmlDocument.getElementWhere(name: 'a');
+
+      final redirectUri = Uri.parse(achor.getAttribute('href'));
+      res = await http.get(redirectUri, headers: _headers);
+      /*
+      final newOption = {
+        'method': option['method'],
+        'host': redirectUri.authority,
+        'path': redirectUri.path,
+        'params':
+            Util.assign<String>(option['params'], redirectUri.queryParameters),
+        'body': option['body']
+      };
+      return query(newOption, value);
+      */
     } else if (res.statusCode >= 400) {
       throw Exception(
           '${opt['method']} ${opt['path']} Status[${res.statusCode}]');
-    } else {
-      return json.decode(res.body);
     }
+
+    return json.decode(res.body);
   }
 }
