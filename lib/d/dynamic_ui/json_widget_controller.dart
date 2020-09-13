@@ -1,49 +1,61 @@
 import 'package:flutter/material.dart';
-import 'package:ivy/d/dynamic_ui/json_stateful_widget.dart';
 
 import './network.dart';
 
 class JSONWidgetController {
-  GlobalKey<FormState> formKey;
-  Map<String, dynamic> submitOpt;
+  GlobalKey<FormState> _formKey;
+  Map<String, dynamic> _submitOpt = {};
 
-  final Map<String, JSONStatefulWidget> _widgets = {};
-  final Map<String, dynamic> _value = {};
+  final Map<String, ValueNotifier> _notifiers = {};
 
-  void addWidget(String key, JSONStatefulWidget widget) {
-    _widgets[key] = widget;
+  void setFormKey(key) {
+    _formKey = key;
   }
 
-  void save(String key, dynamic value) {
-    _value[key] = value;
+  ValueNotifier<T> setValue<T>(String key, T value) {
+    ValueNotifier<T> n;
+    if (_notifiers.containsKey(key)) {
+      n = _notifiers[key];
+      n.value = value;
+    } else {
+      n = ValueNotifier<T>(value);
+      _notifiers[key] = n;
+    }
+    return n;
   }
 
-  String readString(String key) {
-    return _value[key];
+  Map<String, dynamic> getValues() {
+    Map<String, dynamic> map = {};
+    _notifiers.forEach((key, n) {
+      map[key] = n.value;
+    });
+    return map;
   }
 
   void reload(Map<String, dynamic> obj) {
     obj.forEach((key, value) {
-      if (_widgets.containsKey(key)) _widgets[key].setValue(value);
+      if (_notifiers.containsKey(key)) _notifiers[key].value = value;
     });
-    _value.addAll(obj);
+  }
+
+  void setSubmitOption(Map<String, dynamic> option) {
+    _submitOpt = Map.from(option);
   }
 
   Future<Map<String, dynamic>> onSubmit(BuildContext ctx) async {
-    var form = formKey.currentState;
+    var form = _formKey.currentState;
     if (form.validate()) {
       form.save();
       // hide keyboard
       FocusScope.of(ctx).requestFocus(FocusNode());
       //submit form
-      var ret = new Map<String, dynamic>.from(_value);
+      var ret = new Map<String, dynamic>.from(getValues());
 
-      await Network.instance.query(submitOpt, ret);
+      await Network.instance.query(_submitOpt, ret);
       // clear the content
-      _value.clear();
       form.reset();
-      _widgets.forEach((key, value) {
-        value.clearValue();
+      _notifiers.forEach((key, n) {
+        n.value = null;
       });
 
       return ret;

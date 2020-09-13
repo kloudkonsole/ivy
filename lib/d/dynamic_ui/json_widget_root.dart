@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:provider/provider.dart';
+
 import './json_widget.dart';
 import './json_widget_controller.dart';
 
@@ -18,11 +20,13 @@ class JSONWidgetRoot extends StatelessWidget {
     final child = Util.cast<List<dynamic>>(schema[2]);
 
     Network.instance.setDefault(attr['http']);
-    controller.submitOpt = attr['submit'];
+    controller.setSubmitOption(attr['submit']);
 
-    return SafeArea(
-        child: GestureDetector(
-            onTap: () => FocusScope.of(ctx).requestFocus(FocusNode()),
-            child: JSONWidget(schema: child, controller: controller)));
+    return Provider<JSONWidgetController>(
+        create: (BuildContext ctx) => controller,
+        child: SafeArea(
+            child: GestureDetector(
+                onTap: () => FocusScope.of(ctx).requestFocus(FocusNode()),
+                child: JSONWidget(schema: child, controller: controller))));
   }
 }

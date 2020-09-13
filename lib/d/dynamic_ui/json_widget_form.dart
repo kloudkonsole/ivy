@@ -21,7 +21,7 @@ class _JSONWidgetFormState extends State<JSONWidgetForm> {
   void initState() {
     super.initState();
     if (widget.controller != null) {
-      widget.controller.formKey = _formKey;
+      widget.controller.setFormKey(_formKey);
     }
   }
 

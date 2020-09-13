@@ -2,10 +2,7 @@ import 'package:flutter/material.dart';
 
 import './json_widget_root.dart';
 import './json_widget_form.dart';
-import './json_widget_text.dart';
-import './json_widget_search.dart';
-import './json_widget_dropdown.dart';
-import './json_widget_datepicker.dart';
+import 'json_widget_text.dart';
 import './json_widget_controller.dart';
 import './util.dart';
 
@@ -27,26 +24,11 @@ class JSONWidget extends StatelessWidget {
       case 'form':
         return JSONWidgetForm(schema: schema, controller: controller);
       case 'text':
-        return JSONWidgetText(schema, controller);
-      case 'search':
-        return JSONWidgetSearch(schema, controller);
-      case 'dropdown':
-        subtype = Util.cast<String>(attr['type'], 'text');
-        switch (subtype) {
-          case 'text':
-            return JSONWidgetDropdown<String>(schema, controller);
-          case 'int':
-            return JSONWidgetDropdown<int>(schema, controller);
-          case 'bool':
-            return JSONWidgetDropdown<bool>(schema, controller);
-        }
-        break;
-      case 'date':
-        return JSONWidgetDatePicker(schema, controller);
+        return JSONWidgetText(schema);
     }
     return JSONWidgetText([
       'text',
       {'id': 'error', 'value': 'unknown $type'}
-    ], controller);
+    ]);
   }
 }
