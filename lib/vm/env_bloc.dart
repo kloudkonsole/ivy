@@ -91,10 +91,15 @@ class EnvBloc with ChangeNotifier {
         "required": true,
         "type": "text"
       }],
-      ["text", {
-        "id": "img",
-        "lbl": "Image",
-        "type": "text"
+      ["dropdown", {
+        "id": "s",
+        "lbl": "Status",
+        "type": "int",
+        "items": [[0, "Inactive"], [1, "Active"]]
+      }],
+      ["date", {
+        "id": "cat",
+        "lbl": "Created At"
       }]
   ]]]
     ''';

@@ -26,4 +26,19 @@ class Util {
     });
     return json;
   }
+
+  static Map<String, T> extractType<T>(Map<String, dynamic> map) {
+    Map<String, T> ret = {};
+    map.forEach((key, value) {
+      if (value is T) ret[key] = cast<T>(value);
+    });
+    return ret;
+  }
+
+  static Map<String, T> assign<T>(
+      Map<String, dynamic> to, Map<String, dynamic> from) {
+    final Map<String, T> clone = Map.from(Util.extractType<T>(to ?? {}));
+    clone.addAll(Util.extractType<T>(from ?? {}));
+    return clone;
+  }
 }

@@ -5,40 +5,38 @@ import 'package:ivy/d/dynamic_ui/json_widget_controller.dart';
 
 import './util.dart';
 
-class JSONWidgetDropdown<T> extends StatefulWidget
-    implements JSONStatefulWidget<T> {
+class JSONWidgetDatePicker extends StatefulWidget
+    implements JSONStatefulWidget<String> {
   final List<dynamic> schema;
   final Map<String, dynamic> attr;
   final String id;
   final String label;
-  final String type;
   final bool mandatory;
   final JSONWidgetController controller;
-  final _valueNotifier = ValueNotifier<T>(null);
+  final _valueNotifier = ValueNotifier<DateTime>(null);
 
-  JSONWidgetDropdown._(
+  JSONWidgetDatePicker._(
       {@required this.schema, @required this.controller, @required this.attr})
       : id = Util.cast<String>(attr['id'], 'ID'),
         label = Util.cast<String>(attr['lbl'], 'LABEL'),
-        type = Util.cast<String>(attr['type'], 'text'),
         mandatory = Util.cast<bool>(attr['required'], false) {
     if (controller != null) {
       controller.addWidget(id, this);
     }
   }
 
-  JSONWidgetDropdown(schema, controller)
+  JSONWidgetDatePicker(schema, controller)
       : this._(
             schema: schema,
             controller: controller,
             attr: Util.cast<Map<String, dynamic>>(schema[1]));
 
   @override
-  _JSONWidgetDropdownState<T> createState() => _JSONWidgetDropdownState();
+  _JSONWidgetDatePickerState createState() => _JSONWidgetDatePickerState();
 
   @override
-  void setValue(T value) {
-    _valueNotifier.value = value;
+  void setValue(String json) {
+    _valueNotifier.value = DateTime.parse(json);
   }
 
   @override
@@ -47,14 +45,20 @@ class JSONWidgetDropdown<T> extends StatefulWidget
   }
 }
 
-class _JSONWidgetDropdownState<T> extends State<JSONWidgetDropdown<T>> {
-  T _selection;
+class _JSONWidgetDatePickerState extends State<JSONWidgetDatePicker> {
+  DateTime _selection;
 
   @override
   void initState() {
     super.initState();
 
-    _selection = widget.attr['def'];
+    final def = widget.attr['def'];
+    if (def != null) {
+      if ('NOW' == def)
+        _selection = DateTime.now();
+      else
+        _selection = DateTime.parse(def);
+    }
 
     widget._valueNotifier.addListener(() {
       setState(() {
@@ -72,25 +76,23 @@ class _JSONWidgetDropdownState<T> extends State<JSONWidgetDropdown<T>> {
 
   @override
   Widget build(BuildContext ctx) {
-    return DropdownButtonFormField<T>(
-      value: _selection,
-      items: widget.attr['items']
-          .map<DropdownMenuItem<T>>((item) =>
-              new DropdownMenuItem<T>(child: Text(item[1]), value: item[0]))
-          .toList(),
-      decoration: InputDecoration(
-          labelText: widget.label + (widget.mandatory ? '*' : '')),
-      onChanged: (T value) {
-        widget._valueNotifier.value = value;
+    return InputDatePickerFormField(
+      fieldLabelText: widget.label + (widget.mandatory ? '*' : ''),
+      initialDate: _selection,
+      firstDate: DateTime.parse(widget.attr['gt'] ?? '1975-11-15'),
+      lastDate: DateTime(2054),
+      onDateSubmitted: (value) {
+        setState(() {
+          _selection = value;
+        });
       },
-      validator: (T value) {
-        if (widget.mandatory && value == null)
-          return '${widget.label} is required';
-        return null;
-      },
-      onSaved: (T value) {
+      onDateSaved: (DateTime value) {
         widget.controller.save(widget.id, value);
         return value;
+      },
+      selectableDayPredicate: (DateTime value) {
+        widget._valueNotifier.value = value;
+        return true;
       },
     );
   }
