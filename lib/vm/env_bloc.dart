@@ -11,7 +11,6 @@ class EnvBloc with ChangeNotifier {
 
   Future fetchEnv(String id) async {
     //String text = await _source.fetch(id, 'env');
-    /*
     String text = '''
   ["root", {
     "id": "sample",
@@ -81,55 +80,6 @@ class EnvBloc with ChangeNotifier {
       ["date", {
         "id": "cat",
         "lbl": "Created At"
-      }]
-  ]]]
-    ''';
-    */
-    String text = '''
-  ["root", {
-    "id": "sample",
-    "http":{
-      "method": "POST",
-      "host": "script.google.com",
-      "path": "/macros/s/AKfycbz96xSoMs04FMKx9qDrgxLqlaO-XJAeY146tlZ_rCN7vOvyRS0/exec",
-      "params": {
-        "book": "19wPdCQcOSh9yulIeAKQ0EBpu9f6gIBFb7mxuM-Wl3Ps",
-        "page": "parcel"
-      }
-    },
-    "submit":{
-      "body": {
-        "id": "@id",
-        "ref": "@ref",
-        "sku": "@sku",
-        "own": "@own",
-        "img": "@img"
-      }
-    }
-  }, ["form", {"id": "pp"}, [
-      ["", {
-        "id": "ref",
-        "lbl": "Parcel Reference",
-        "required": true,
-        "type": "text"
-      }],
-      ["text", {
-        "id": "id",
-        "lbl": "Parcel ID",
-        "required": true,
-        "type": "text"
-      }],
-      ["text", {
-        "id": "sku",
-        "lbl": "SKU",
-        "required": true,
-        "type": "text"
-      }],
-      ["text", {
-        "id": "own",
-        "lbl": "Owner",
-        "required": true,
-        "type": "text"
       }]
   ]]]
     ''';

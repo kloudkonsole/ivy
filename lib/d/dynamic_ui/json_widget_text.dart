@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import 'package:ivy/d/dynamic_ui/json_widget_controller.dart';
 import 'package:provider/provider.dart';
 
-import 'util.dart';
+import './json_widget_controller.dart';
+import './util.dart';
 
 class JSONWidgetText extends StatefulWidget {
   final List<dynamic> schema;
@@ -45,7 +45,8 @@ class _JSONWidgetTextState extends State<JSONWidgetText> {
         valueListenable: notifier,
         builder: (BuildContext context, String value, Widget child) {
           return TextFormField(
-            initialValue: value ?? '',
+            key: Key(value),
+            initialValue: value,
             decoration: InputDecoration(
                 labelText: widget.label + (widget.mandatory ? '*' : '')),
             keyboardType:

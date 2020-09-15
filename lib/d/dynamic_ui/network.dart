@@ -44,24 +44,11 @@ class Network {
 
     // for security, script.google.com always redirect with 302
     if (res.statusCode == 302) {
-      // parse return html to get temp url
-      // send again
       XmlDocument xmlDocument = XmlDocument.fromString(res.body);
       final achor = xmlDocument.getElementWhere(name: 'a');
 
       final redirectUri = Uri.parse(achor.getAttribute('href'));
       res = await http.get(redirectUri, headers: _headers);
-      /*
-      final newOption = {
-        'method': option['method'],
-        'host': redirectUri.authority,
-        'path': redirectUri.path,
-        'params':
-            Util.assign<String>(option['params'], redirectUri.queryParameters),
-        'body': option['body']
-      };
-      return query(newOption, value);
-      */
     } else if (res.statusCode >= 400) {
       throw Exception(
           '${opt['method']} ${opt['path']} Status[${res.statusCode}]');
