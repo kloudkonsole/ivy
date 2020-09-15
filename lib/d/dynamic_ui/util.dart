@@ -18,13 +18,19 @@ class Util {
     return getIconUsingPrefix(name: name);
   }
 
-  static replaceJSON(Map<String, String> json, Map<String, dynamic> map) {
+  static Map<String, dynamic> replaceJSON(
+      Map<String, String> json, Map<String, dynamic> map) {
+    Map<String, dynamic> ret = {};
+    String mapKey;
     json.forEach((key, value) {
       if ('@' == value.substring(0, 1)) {
-        json[key] = map[value.substring(1)];
+        mapKey = value.substring(1);
+        if (map.containsKey(mapKey)) ret[key] = map[mapKey];
+      } else {
+        ret[key] = value;
       }
     });
-    return json;
+    return ret;
   }
 
   static Map<String, T> extractType<T>(Map<String, dynamic> map) {

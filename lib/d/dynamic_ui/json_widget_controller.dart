@@ -1,3 +1,4 @@
+// implemented ValueNotifier based on https://www.didierboelens.com/2020/06/statefulwidget-interactions/
 import 'package:flutter/material.dart';
 
 import './network.dart';

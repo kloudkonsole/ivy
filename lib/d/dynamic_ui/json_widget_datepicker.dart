@@ -45,7 +45,7 @@ class _JSONWidgetDatePickerState extends State<JSONWidgetDatePicker> {
           return InputDatePickerFormField(
             key: Key(value),
             fieldLabelText: widget.label + (widget.mandatory ? '*' : ''),
-            initialDate: value == null ? value : DateTime.parse(value),
+            initialDate: DateTime.tryParse(value),
             firstDate: DateTime.parse(widget.attr['gt'] ?? '1975-11-15'),
             lastDate: DateTime(2054),
             onDateSubmitted: (value) {

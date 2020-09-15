@@ -29,7 +29,8 @@ class EnvBloc with ChangeNotifier {
         "ref": "@ref",
         "sku": "@sku",
         "own": "@own",
-        "img": "@img"
+        "img": "@img",
+        "s": "@s"
       }
     }
   }, ["form", {"id": "pp"}, [
