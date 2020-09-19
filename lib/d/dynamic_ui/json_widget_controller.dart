@@ -4,14 +4,12 @@ import 'package:flutter/material.dart';
 import './network.dart';
 
 class JSONWidgetController {
-  GlobalKey<FormState> _formKey;
+  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   Map<String, dynamic> _submitOpt = {};
 
   final Map<String, ValueNotifier> _notifiers = {};
 
-  void setFormKey(key) {
-    _formKey = key;
-  }
+  Key get formKey => _formKey;
 
   ValueNotifier<T> setValue<T>(String key, T value) {
     ValueNotifier<T> n;

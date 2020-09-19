@@ -78,9 +78,18 @@ class EnvBloc with ChangeNotifier {
         "type": "int",
         "items": [[0, "Inactive"], [1, "Active"]]
       }],
+      ["upload", {
+        "id": "img",
+        "lbl": "Image"
+      }],
+      ["canvas", {
+        "id": "sig",
+        "lbl": "Signature"
+      }],
       ["date", {
         "id": "cat",
-        "lbl": "Created At"
+        "lbl": "Created At",
+        "type": "datetime"
       }]
   ]]]
     ''';

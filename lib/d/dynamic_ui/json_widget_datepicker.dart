@@ -1,3 +1,4 @@
+// possible enhancement https://medium.com/enappd/building-a-flutter-datetime-picker-in-just-15-minutes-6a4b13d6a6d1
 import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
@@ -39,15 +40,30 @@ class _JSONWidgetDatePickerState extends State<JSONWidgetDatePicker> {
 
   @override
   Widget build(BuildContext ctx) {
+    String hint;
+    switch (widget.attr['type']) {
+      case 'date':
+        hint = 'mm/dd/yyyy';
+        break;
+      case 'time':
+        hint = 'hh:mm:ss';
+        break;
+      case 'datetime':
+        hint = 'mm/dd/yyyy hh:mm:ss';
+        break;
+    }
     return ValueListenableBuilder<String>(
         valueListenable: notifier,
         builder: (BuildContext context, String value, Widget child) {
           return InputDatePickerFormField(
             key: Key(value),
             fieldLabelText: widget.label + (widget.mandatory ? '*' : ''),
-            initialDate: DateTime.tryParse(value),
-            firstDate: DateTime.parse(widget.attr['gt'] ?? '1975-11-15'),
-            lastDate: DateTime(2054),
+            fieldHintText: hint,
+            initialDate: (value == null ? null : DateTime.tryParse(value)),
+            firstDate: DateTime.now()
+                .subtract(new Duration(days: widget.attr['plus'] ?? 365)),
+            lastDate: DateTime.now()
+                .add(new Duration(days: widget.attr['minus'] ?? 365)),
             onDateSubmitted: (value) {
               ctrl.setValue<String>(widget.id, value.toIso8601String());
             },

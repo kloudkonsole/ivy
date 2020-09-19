@@ -15,22 +15,12 @@ class JSONWidgetForm extends StatefulWidget {
 }
 
 class _JSONWidgetFormState extends State<JSONWidgetForm> {
-  final _formKey = GlobalKey<FormState>();
-
-  @override
-  void initState() {
-    super.initState();
-    if (widget.controller != null) {
-      widget.controller.setFormKey(_formKey);
-    }
-  }
-
   @override
   Widget build(BuildContext ctx) {
     final child = Util.cast<List<dynamic>>(widget.schema[2]);
 
     return Form(
-        key: _formKey,
+        key: widget.controller.formKey,
         child: Column(children: <Widget>[
           Expanded(
               child: ListView.builder(
