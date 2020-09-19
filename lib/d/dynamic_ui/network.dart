@@ -23,11 +23,12 @@ class Network {
       Map<String, dynamic> option, Map<String, dynamic> value) async {
     option ??= {};
     final opt = Util.assign<String>(defaultOption, option);
-    final params =
+    final paramTmpl =
         Util.assign<String>(defaultOption['params'], option['params']);
 
-    Util.replaceJSON(params, value);
-    final uri = Uri.https(opt['host'], opt['path'], params);
+    final params = Util.replaceJSON(paramTmpl, value);
+    final uri = Uri.https(opt['host'], opt['path'],
+        Map.castFrom<String, dynamic, String, String>(params));
 
     var res;
 
@@ -36,32 +37,20 @@ class Network {
         res = await http.get(uri, headers: _headers);
         break;
       case 'POST':
-        final body = Util.assign<String>(defaultOption['body'], option['body']);
-        Util.replaceJSON(body, value);
+        final bodyTmpl =
+            Util.assign<String>(defaultOption['body'], option['body']);
+        final body = Util.replaceJSON(bodyTmpl, value);
         res = await http.post(uri, headers: _headers, body: jsonEncode(body));
         break;
     }
 
     // for security, script.google.com always redirect with 302
     if (res.statusCode == 302) {
-      // parse return html to get temp url
-      // send again
       XmlDocument xmlDocument = XmlDocument.fromString(res.body);
       final achor = xmlDocument.getElementWhere(name: 'a');
 
       final redirectUri = Uri.parse(achor.getAttribute('href'));
       res = await http.get(redirectUri, headers: _headers);
-      /*
-      final newOption = {
-        'method': option['method'],
-        'host': redirectUri.authority,
-        'path': redirectUri.path,
-        'params':
-            Util.assign<String>(option['params'], redirectUri.queryParameters),
-        'body': option['body']
-      };
-      return query(newOption, value);
-      */
     } else if (res.statusCode >= 400) {
       throw Exception(
           '${opt['method']} ${opt['path']} Status[${res.statusCode}]');

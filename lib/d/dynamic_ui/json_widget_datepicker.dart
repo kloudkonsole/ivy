@@ -1,99 +1,80 @@
+// possible enhancement https://medium.com/enappd/building-a-flutter-datetime-picker-in-just-15-minutes-6a4b13d6a6d1
 import 'package:flutter/material.dart';
 
-import 'package:ivy/d/dynamic_ui/json_stateful_widget.dart';
-import 'package:ivy/d/dynamic_ui/json_widget_controller.dart';
+import 'package:provider/provider.dart';
 
+import './json_widget_controller.dart';
 import './util.dart';
 
-class JSONWidgetDatePicker extends StatefulWidget
-    implements JSONStatefulWidget<String> {
+class JSONWidgetDatePicker extends StatefulWidget {
   final List<dynamic> schema;
   final Map<String, dynamic> attr;
   final String id;
   final String label;
   final bool mandatory;
-  final JSONWidgetController controller;
-  final _valueNotifier = ValueNotifier<DateTime>(null);
 
-  JSONWidgetDatePicker._(
-      {@required this.schema, @required this.controller, @required this.attr})
+  JSONWidgetDatePicker._({@required this.schema, @required this.attr})
       : id = Util.cast<String>(attr['id'], 'ID'),
         label = Util.cast<String>(attr['lbl'], 'LABEL'),
-        mandatory = Util.cast<bool>(attr['required'], false) {
-    if (controller != null) {
-      controller.addWidget(id, this);
-    }
-  }
+        mandatory = Util.cast<bool>(attr['required'], false);
 
-  JSONWidgetDatePicker(schema, controller)
+  JSONWidgetDatePicker(schema)
       : this._(
-            schema: schema,
-            controller: controller,
-            attr: Util.cast<Map<String, dynamic>>(schema[1]));
+            schema: schema, attr: Util.cast<Map<String, dynamic>>(schema[1]));
 
   @override
   _JSONWidgetDatePickerState createState() => _JSONWidgetDatePickerState();
-
-  @override
-  void setValue(String json) {
-    _valueNotifier.value = DateTime.parse(json);
-  }
-
-  @override
-  void clearValue() {
-    _valueNotifier.value = null;
-  }
 }
 
 class _JSONWidgetDatePickerState extends State<JSONWidgetDatePicker> {
-  DateTime _selection;
+  ValueNotifier<String> notifier;
+  JSONWidgetController ctrl;
 
   @override
   void initState() {
     super.initState();
 
-    final def = widget.attr['def'];
-    if (def != null) {
-      if ('NOW' == def)
-        _selection = DateTime.now();
-      else
-        _selection = DateTime.parse(def);
-    }
-
-    widget._valueNotifier.addListener(() {
-      setState(() {
-        _selection = widget._valueNotifier.value;
-      });
-    });
-  }
-
-  @override
-  void dispose() {
-    // Clean up the controller when the widget is removed from the
-    // widget tree.
-    super.dispose();
+    ctrl = Provider.of<JSONWidgetController>(context, listen: false);
+    notifier = ctrl.setValue<String>(widget.id, widget.attr['value']);
   }
 
   @override
   Widget build(BuildContext ctx) {
-    return InputDatePickerFormField(
-      fieldLabelText: widget.label + (widget.mandatory ? '*' : ''),
-      initialDate: _selection,
-      firstDate: DateTime.parse(widget.attr['gt'] ?? '1975-11-15'),
-      lastDate: DateTime(2054),
-      onDateSubmitted: (value) {
-        setState(() {
-          _selection = value;
+    String hint;
+    switch (widget.attr['type']) {
+      case 'date':
+        hint = 'mm/dd/yyyy';
+        break;
+      case 'time':
+        hint = 'hh:mm:ss';
+        break;
+      case 'datetime':
+        hint = 'mm/dd/yyyy hh:mm:ss';
+        break;
+    }
+    return ValueListenableBuilder<String>(
+        valueListenable: notifier,
+        builder: (BuildContext context, String value, Widget child) {
+          return InputDatePickerFormField(
+            key: Key(value),
+            fieldLabelText: widget.label + (widget.mandatory ? '*' : ''),
+            fieldHintText: hint,
+            initialDate: (value == null ? null : DateTime.tryParse(value)),
+            firstDate: DateTime.now()
+                .subtract(new Duration(days: widget.attr['plus'] ?? 365)),
+            lastDate: DateTime.now()
+                .add(new Duration(days: widget.attr['minus'] ?? 365)),
+            onDateSubmitted: (value) {
+              ctrl.setValue<String>(widget.id, value.toIso8601String());
+            },
+            onDateSaved: (DateTime value) {
+              ctrl.setValue<String>(widget.id, value.toIso8601String());
+              return value;
+            },
+            selectableDayPredicate: (DateTime value) {
+              return true;
+            },
+          );
         });
-      },
-      onDateSaved: (DateTime value) {
-        widget.controller.save(widget.id, value);
-        return value;
-      },
-      selectableDayPredicate: (DateTime value) {
-        widget._valueNotifier.value = value;
-        return true;
-      },
-    );
   }
 }

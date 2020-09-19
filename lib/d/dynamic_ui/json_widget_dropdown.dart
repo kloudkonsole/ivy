@@ -1,97 +1,70 @@
 import 'package:flutter/material.dart';
 
-import 'package:ivy/d/dynamic_ui/json_stateful_widget.dart';
-import 'package:ivy/d/dynamic_ui/json_widget_controller.dart';
+import 'package:provider/provider.dart';
 
+import './json_widget_controller.dart';
 import './util.dart';
 
-class JSONWidgetDropdown<T> extends StatefulWidget
-    implements JSONStatefulWidget<T> {
+class JSONWidgetDropdown<T> extends StatefulWidget {
   final List<dynamic> schema;
   final Map<String, dynamic> attr;
   final String id;
   final String label;
   final String type;
   final bool mandatory;
-  final JSONWidgetController controller;
-  final _valueNotifier = ValueNotifier<T>(null);
 
-  JSONWidgetDropdown._(
-      {@required this.schema, @required this.controller, @required this.attr})
+  JSONWidgetDropdown._({@required this.schema, @required this.attr})
       : id = Util.cast<String>(attr['id'], 'ID'),
         label = Util.cast<String>(attr['lbl'], 'LABEL'),
         type = Util.cast<String>(attr['type'], 'text'),
-        mandatory = Util.cast<bool>(attr['required'], false) {
-    if (controller != null) {
-      controller.addWidget(id, this);
-    }
-  }
+        mandatory = Util.cast<bool>(attr['required'], false);
 
-  JSONWidgetDropdown(schema, controller)
+  JSONWidgetDropdown(schema)
       : this._(
-            schema: schema,
-            controller: controller,
-            attr: Util.cast<Map<String, dynamic>>(schema[1]));
+            schema: schema, attr: Util.cast<Map<String, dynamic>>(schema[1]));
 
   @override
   _JSONWidgetDropdownState<T> createState() => _JSONWidgetDropdownState();
-
-  @override
-  void setValue(T value) {
-    _valueNotifier.value = value;
-  }
-
-  @override
-  void clearValue() {
-    _valueNotifier.value = null;
-  }
 }
 
 class _JSONWidgetDropdownState<T> extends State<JSONWidgetDropdown<T>> {
-  T _selection;
+  ValueNotifier<T> notifier;
+  JSONWidgetController ctrl;
 
   @override
   void initState() {
     super.initState();
 
-    _selection = widget.attr['def'];
-
-    widget._valueNotifier.addListener(() {
-      setState(() {
-        _selection = widget._valueNotifier.value;
-      });
-    });
-  }
-
-  @override
-  void dispose() {
-    // Clean up the controller when the widget is removed from the
-    // widget tree.
-    super.dispose();
+    ctrl = Provider.of<JSONWidgetController>(context, listen: false);
+    notifier = ctrl.setValue<T>(widget.id, widget.attr['value']);
   }
 
   @override
   Widget build(BuildContext ctx) {
-    return DropdownButtonFormField<T>(
-      value: _selection,
-      items: widget.attr['items']
-          .map<DropdownMenuItem<T>>((item) =>
-              new DropdownMenuItem<T>(child: Text(item[1]), value: item[0]))
-          .toList(),
-      decoration: InputDecoration(
-          labelText: widget.label + (widget.mandatory ? '*' : '')),
-      onChanged: (T value) {
-        widget._valueNotifier.value = value;
-      },
-      validator: (T value) {
-        if (widget.mandatory && value == null)
-          return '${widget.label} is required';
-        return null;
-      },
-      onSaved: (T value) {
-        widget.controller.save(widget.id, value);
-        return value;
-      },
-    );
+    return ValueListenableBuilder<T>(
+        valueListenable: notifier,
+        builder: (BuildContext context, T value, Widget child) {
+          return DropdownButtonFormField<T>(
+            value: value,
+            items: widget.attr['items']
+                .map<DropdownMenuItem<T>>((item) => new DropdownMenuItem<T>(
+                    child: Text(item[1]), value: item[0]))
+                .toList(),
+            decoration: InputDecoration(
+                labelText: widget.label + (widget.mandatory ? '*' : '')),
+            onChanged: (T value) {
+              //ctrl.setValue<T>(widget.id, value);
+            },
+            validator: (T value) {
+              if (widget.mandatory && value == null)
+                return '${widget.label} is required';
+              return null;
+            },
+            onSaved: (T value) {
+              ctrl.setValue<T>(widget.id, value);
+              return value;
+            },
+          );
+        });
   }
 }

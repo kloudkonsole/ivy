@@ -6,6 +6,8 @@ import './json_widget_text.dart';
 import './json_widget_search.dart';
 import './json_widget_dropdown.dart';
 import './json_widget_datepicker.dart';
+import './json_widget_upload.dart';
+import './json_widget_canvas.dart';
 import './json_widget_controller.dart';
 import './util.dart';
 
@@ -27,26 +29,32 @@ class JSONWidget extends StatelessWidget {
       case 'form':
         return JSONWidgetForm(schema: schema, controller: controller);
       case 'text':
-        return JSONWidgetText(schema, controller);
+        return JSONWidgetText(schema);
       case 'search':
-        return JSONWidgetSearch(schema, controller);
+        return JSONWidgetSearch(schema);
       case 'dropdown':
         subtype = Util.cast<String>(attr['type'], 'text');
         switch (subtype) {
           case 'text':
-            return JSONWidgetDropdown<String>(schema, controller);
+            return JSONWidgetDropdown<String>(schema);
           case 'int':
-            return JSONWidgetDropdown<int>(schema, controller);
+            return JSONWidgetDropdown<int>(schema);
           case 'bool':
-            return JSONWidgetDropdown<bool>(schema, controller);
+            return JSONWidgetDropdown<bool>(schema);
+          default:
+            return JSONWidgetDropdown<String>(schema);
         }
         break;
       case 'date':
-        return JSONWidgetDatePicker(schema, controller);
+        return JSONWidgetDatePicker(schema);
+      case 'upload':
+        return JSONWidgetUpload(schema);
+      case 'canvas':
+        return JSONWidgetCanvas(schema);
     }
     return JSONWidgetText([
       'text',
-      {'id': 'error', 'value': 'unknown $type'}
-    ], controller);
+      {'id': 'error', 'value': 'unknown type [$type]'}
+    ]);
   }
 }

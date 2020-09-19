@@ -11,26 +11,6 @@ class EnvBloc with ChangeNotifier {
 
   Future fetchEnv(String id) async {
     //String text = await _source.fetch(id, 'env');
-    /*
-    String text = '''
-  ["root", {"id": "blu"}, ["form", {"id": "pp"}, [
-      ["search", {"id": "reference"}, []],
-      ["dropdown", {"id": "state"}, []],
-      ["card", {"id": "detail"}, [
-        ["text", {"id": "id"}, []],
-        ["text", {"id": "dst.first_name"}, []],
-        ["dropdown", {"id": "dst.ccode"}, []],
-        ["text", {"id: "dst.mobile"}, []],
-        ["text", {"id": "dst.email"}, []],
-        ["dropdown", {"id": "dst.bluport_idx"}. []],
-        ["dropdown", {"id": "dst.size"}, []],
-        ["text", {"id": "dst.r"}, []],
-        ["text", {"id": "dst.c"}, []]
-      ]]
-    ]]
-  ]
-    ''';
-*/
     String text = '''
   ["root", {
     "id": "sample",
@@ -49,7 +29,8 @@ class EnvBloc with ChangeNotifier {
         "ref": "@ref",
         "sku": "@sku",
         "own": "@own",
-        "img": "@img"
+        "img": "@img",
+        "s": "@s"
       }
     }
   }, ["form", {"id": "pp"}, [
@@ -97,12 +78,22 @@ class EnvBloc with ChangeNotifier {
         "type": "int",
         "items": [[0, "Inactive"], [1, "Active"]]
       }],
+      ["upload", {
+        "id": "img",
+        "lbl": "Image"
+      }],
+      ["canvas", {
+        "id": "sig",
+        "lbl": "Signature"
+      }],
       ["date", {
         "id": "cat",
-        "lbl": "Created At"
+        "lbl": "Created At",
+        "type": "datetime"
       }]
   ]]]
     ''';
+
     env[id] = json.decode(text);
 
     return env[id];
