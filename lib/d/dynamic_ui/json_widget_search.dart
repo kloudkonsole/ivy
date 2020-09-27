@@ -4,7 +4,6 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:provider/provider.dart';
 
 import './json_widget_controller.dart';
-import './network.dart';
 import './util.dart';
 
 class JSONWidgetSearch extends StatefulWidget {
@@ -66,7 +65,7 @@ class _JSONWidgetSearchState extends State<JSONWidgetSearch> {
               return value;
             },
             suggestionsCallback: (pattern) async {
-              final Map<String, dynamic> ret = await Network.instance
+              final Map<String, dynamic> ret = await ctrl.service
                   .query(widget.attr['tip'], {'ref': pattern});
               if (ret['code'] != 0) return [];
               return List.from(ret['body'] ?? []);

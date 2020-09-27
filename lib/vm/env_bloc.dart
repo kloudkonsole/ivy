@@ -14,7 +14,8 @@ class EnvBloc with ChangeNotifier {
     String text = '''
   ["root", {
     "id": "sample",
-    "http":{
+    "service":{
+      "name": "google_sheets",
       "method": "POST",
       "host": "script.google.com",
       "path": "/macros/s/AKfycbz96xSoMs04FMKx9qDrgxLqlaO-XJAeY146tlZ_rCN7vOvyRS0/exec",

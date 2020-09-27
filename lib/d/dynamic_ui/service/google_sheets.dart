@@ -1,24 +1,20 @@
 import 'dart:convert' show json, jsonEncode;
 
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:ivy/d/dynamic_ui/service.dart';
 import 'package:xml_parser/xml_parser.dart';
 
-import './util.dart';
+import '../util.dart';
 
-class Network {
-  static final Network _singleton = Network._();
-  static Network get instance => _singleton;
-
-  Network._();
-
-  Map<String, dynamic> defaultOption = {};
+class GoogleSheets extends Service {
+  final Map<String, dynamic> defaultOption;
   Map<String, String> get _headers =>
       {'Accept': 'application/json', 'Content-Type': 'application/json'};
 
-  void setDefault(Map<String, dynamic> option) {
-    defaultOption = option ?? {};
-  }
+  GoogleSheets({@required this.defaultOption});
 
+  @override
   Future<Map<String, dynamic>> query(
       Map<String, dynamic> option, Map<String, dynamic> value) async {
     option ??= {};

@@ -5,7 +5,6 @@ import 'package:provider/provider.dart';
 import './json_widget.dart';
 import './json_widget_controller.dart';
 
-import './network.dart';
 import './util.dart';
 
 class JSONWidgetRoot extends StatelessWidget {
@@ -19,8 +18,7 @@ class JSONWidgetRoot extends StatelessWidget {
     final attr = Util.cast<Map<String, dynamic>>(schema[1]);
     final child = Util.cast<List<dynamic>>(schema[2]);
 
-    Network.instance.setDefault(attr['http']);
-    controller.setSubmitOption(attr['submit']);
+    controller.createService(attr['service'], attr['submit']);
 
     return Provider<JSONWidgetController>(
         create: (BuildContext ctx) => controller,
