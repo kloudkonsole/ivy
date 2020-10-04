@@ -15,45 +15,38 @@ class EnvBloc with ChangeNotifier {
   ["root", {
     "id": "sample",
     "service":{
-      "name": "google_sheets",
-      "method": "POST",
-      "host": "script.google.com",
-      "path": "/macros/s/AKfycbz96xSoMs04FMKx9qDrgxLqlaO-XJAeY146tlZ_rCN7vOvyRS0/exec",
-      "params": {
-        "book": "19wPdCQcOSh9yulIeAKQ0EBpu9f6gIBFb7mxuM-Wl3Ps",
-        "page": "parcel"
-      }
+      "name": "parse",
+      "keyApplicationId": "WVRsRhvTdjShpFqJqLJTNcsFxeXVC8KAgYc7BbJ4",
+      "keyParseServerUrl": "https://parseapi.back4app.com/",
+      "masterKey": "k6r5Aq5KjrHdkmft8mSsTgx4HE3Szn2DK4LCmac8",
+      "clientKey": "FRnFF3TNskFyAX2qxgsBJjfYFH79OsgP5bfh8Blh"
     },
-    "submit":{
-      "body": {
-        "id": "@id",
-        "ref": "@ref",
-        "sku": "@sku",
-        "own": "@own",
-        "img": "@img",
-        "s": "@s"
-      }
-    }
+    "submit":[
+      ["objectName", "inventory"],
+      ["set", "key", "@id"],
+      ["set", "ref", "@ref"],
+      ["set", "sku", "@sku"],
+      ["set", "own", "@own"],
+      ["set", "img", "@img"],
+      ["set", "s", "@s"],
+      ["save"]
+    ]
   }, ["form", {"id": "pp"}, [
       ["search", {
         "id": "ref",
         "lbl": "Parcel Reference",
         "required": true,
         "type": "text",
-        "tip": {
-          "method": "GET",
-          "params": {
-            "tip": "@ref",
-            "key": "ref"
-          }
-        },
-        "read": {
-          "method": "GET",
-          "params": {
-            "find": "@ref",
-            "key": "ref"
-          }
-        }
+        "tip": [
+          ["queryBuilder", "inventory"],
+          ["Contains", "ref", "@ref"],
+          ["query"]
+        ],
+        "read": [
+          ["queryBuilder", "inventory"],
+          ["Contains", "ref", "@ref"],
+          ["query"]
+        ]
       }],
       ["text", {
         "id": "id",

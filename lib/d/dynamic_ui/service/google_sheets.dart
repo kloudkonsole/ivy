@@ -16,8 +16,8 @@ class GoogleSheets extends Service {
 
   @override
   Future<Map<String, dynamic>> query(
-      Map<String, dynamic> option, Map<String, dynamic> value) async {
-    option ??= {};
+      dynamic req, Map<String, dynamic> value) async {
+    final option = Util.cast<Map<String, dynamic>>(req, {});
     final opt = Util.assign<String>(defaultOption, option);
     final paramTmpl =
         Util.assign<String>(defaultOption['params'], option['params']);

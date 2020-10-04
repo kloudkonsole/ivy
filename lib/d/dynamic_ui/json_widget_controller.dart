@@ -1,28 +1,27 @@
 // implemented ValueNotifier based on https://www.didierboelens.com/2020/06/statefulwidget-interactions/
 import 'package:flutter/material.dart';
 import 'package:ivy/d/dynamic_ui/service.dart';
-import 'package:ivy/d/dynamic_ui/service/firestore.dart';
 
 import 'service/google_sheets.dart';
+import 'service/parse_platform.dart';
 
 class JSONWidgetController {
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   Service _service;
-  Map<String, dynamic> _submitOpt = {};
+  dynamic _submitOpt;
 
   final Map<String, ValueNotifier> _notifiers = {};
 
   Key get formKey => _formKey;
 
-  void createService(
-      Map<String, dynamic> serviceOpt, Map<String, dynamic> submitOpt) {
-    _submitOpt = Map.from(submitOpt);
+  void createService(Map<String, dynamic> serviceOpt, dynamic submitOpt) {
+    _submitOpt = submitOpt;
     switch (serviceOpt['name']) {
       case 'google_sheets':
         _service = new GoogleSheets(defaultOption: serviceOpt);
         break;
-      case 'firestore':
-        _service = new Firestore(defaultOption: serviceOpt);
+      case 'parse':
+        _service = new ParsePlatform(defaultOption: serviceOpt);
         break;
     }
   }
