@@ -18,7 +18,6 @@ class EnvBloc with ChangeNotifier {
       "name": "parse",
       "keyApplicationId": "WVRsRhvTdjShpFqJqLJTNcsFxeXVC8KAgYc7BbJ4",
       "keyParseServerUrl": "https://parseapi.back4app.com/",
-      "masterKey": "k6r5Aq5KjrHdkmft8mSsTgx4HE3Szn2DK4LCmac8",
       "clientKey": "FRnFF3TNskFyAX2qxgsBJjfYFH79OsgP5bfh8Blh"
     },
     "submit":[
