@@ -1,15 +1,32 @@
 // implemented ValueNotifier based on https://www.didierboelens.com/2020/06/statefulwidget-interactions/
 import 'package:flutter/material.dart';
+import 'package:ivy/d/dynamic_ui/service.dart';
 
-import './network.dart';
+import 'service/google_sheets.dart';
+import 'service/parse_platform.dart';
 
 class JSONWidgetController {
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  Map<String, dynamic> _submitOpt = {};
+  Service _service;
+  dynamic _submitOpt;
 
   final Map<String, ValueNotifier> _notifiers = {};
 
   Key get formKey => _formKey;
+
+  void createService(Map<String, dynamic> serviceOpt, dynamic submitOpt) {
+    _submitOpt = submitOpt;
+    switch (serviceOpt['name']) {
+      case 'google_sheets':
+        _service = new GoogleSheets(defaultOption: serviceOpt);
+        break;
+      case 'parse':
+        _service = new ParsePlatform(defaultOption: serviceOpt);
+        break;
+    }
+  }
+
+  Service get service => _service;
 
   ValueNotifier<T> setValue<T>(String key, T value) {
     ValueNotifier<T> n;
@@ -37,10 +54,6 @@ class JSONWidgetController {
     });
   }
 
-  void setSubmitOption(Map<String, dynamic> option) {
-    _submitOpt = Map.from(option);
-  }
-
   Future<Map<String, dynamic>> onSubmit(BuildContext ctx) async {
     var form = _formKey.currentState;
     if (form.validate()) {
@@ -50,7 +63,7 @@ class JSONWidgetController {
       //submit form
       var ret = new Map<String, dynamic>.from(getValues());
 
-      await Network.instance.query(_submitOpt, ret);
+      await _service.query(_submitOpt, ret);
       // clear the content
       form.reset();
       _notifiers.forEach((key, n) {
