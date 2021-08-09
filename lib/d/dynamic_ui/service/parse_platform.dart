@@ -28,7 +28,6 @@ class ParsePlatform extends Service {
   void init(Map<String, dynamic> option) async {
     await Parse()
         .initialize(option['keyApplicationId'], option['keyParseServerUrl'],
-            masterKey: option['masterKey'], // Required for Back4App and others
             clientKey: option['clientKey'], // Required for some setups
             debug: true, // When enabled, prints logs to console
             autoSendSessionId: true, // Required for authentication and ACL
